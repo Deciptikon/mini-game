@@ -1,11 +1,11 @@
-import { W2, H2 } from "./constants.js";
+import { W, H } from "./constants.js";
 import MenuScene from "./scenes/MenuScene.js";
 import PetScene from "./scenes/PetScene.js";
 
 const config = {
   type: Phaser.CANVAS,
-  width: 2 * W2,
-  height: 2 * H2,
+  width: W,
+  height: H,
   scene: [MenuScene, PetScene],
   backgroundColor: "#9bd6ff",
 };

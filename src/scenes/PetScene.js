@@ -1,4 +1,4 @@
-import { W2, H2, H8, wb, hb } from "../constants.js";
+import { W, H, W2, H2, H8, wb, hb, statsCheckTimeOut } from "../constants.js";
 import Button from "../button.js";
 
 export default class PetScene extends Phaser.Scene {
@@ -15,7 +15,7 @@ export default class PetScene extends Phaser.Scene {
 
   create() {
     this.pet = this.add
-      .sprite(W2, H2 * 0.6, "cat")
+      .sprite(W2, H * 0.3, "cat")
       .setScale(0.3)
       .setInteractive();
 
@@ -28,7 +28,7 @@ export default class PetScene extends Phaser.Scene {
     });
 
     this.statDecayTimer = this.time.addEvent({
-      delay: 3000,
+      delay: statsCheckTimeOut,
       callback: this.decayStats,
       callbackScope: this,
       loop: true,
@@ -36,8 +36,8 @@ export default class PetScene extends Phaser.Scene {
 
     this.drawStats();
 
-    let y = H2 * 1.3;
-    const s = 50;
+    let y = H * 0.65;
+    const s = hb + 15;
     const x = W2;
 
     // Кнопки действий
@@ -51,10 +51,10 @@ export default class PetScene extends Phaser.Scene {
         this.drawStats();
         this.showEmoji("❤️", W2, H8);
       },
-      { color: 0xe91e63 }
+      { color: 0xe91e63, width: wb, height: hb }
     );
 
-    y += hb + s;
+    y += s;
     new Button(
       this,
       x,
@@ -65,10 +65,10 @@ export default class PetScene extends Phaser.Scene {
         this.drawStats();
         this.petJump();
       },
-      { color: 0xe91e63 }
+      { color: 0xe91e63, width: wb, height: hb }
     );
 
-    y += hb + s;
+    y += s;
     new Button(
       this,
       x,
@@ -79,13 +79,13 @@ export default class PetScene extends Phaser.Scene {
         this.drawStats();
         this.showEmoji("💤", W2, H8);
       },
-      { color: 0xe91e63 }
+      { color: 0xe91e63, width: wb, height: hb }
     );
 
     // Кнопка возврата в меню
-    new Button(this, 50, 50, "Меню", () => this.scene.start("MenuScene"), {
+    new Button(this, 50, 50, "<--", () => this.scene.start("MenuScene"), {
       color: 0x2196f3,
-      width: 100,
+      width: 80,
       height: 40,
     });
   }
@@ -100,13 +100,14 @@ export default class PetScene extends Phaser.Scene {
     const h = 20;
     const s = 15;
     const baseColor = 0x555555;
+    const sizeIcons = "25px";
 
     // Еда
     this.statsBars.fillStyle(baseColor, 1).fillRect(x, y, barWidth, h);
     this.statsBars
       .fillStyle(0x5722ff, 1)
       .fillRect(x, y, barWidth * (this.stats.food / 10), h);
-    this.add.text(x - 10, y, "🍎", { fontSize: "20px" });
+    this.add.text(x - 10, y, "🍎", { fontSize: sizeIcons });
 
     // Настроение
     y += h + s;
@@ -114,7 +115,7 @@ export default class PetScene extends Phaser.Scene {
     this.statsBars
       .fillStyle(0xffeb3b, 1)
       .fillRect(x, y, barWidth * (this.stats.mood / 10), h);
-    this.add.text(x - 10, y, "😊", { fontSize: "20px" });
+    this.add.text(x - 10, y, "😊", { fontSize: sizeIcons });
 
     // Энергия
     y += h + s;
@@ -122,7 +123,7 @@ export default class PetScene extends Phaser.Scene {
     this.statsBars
       .fillStyle(0x4caf50, 1)
       .fillRect(x, y, barWidth * (this.stats.energy / 10), h);
-    this.add.text(x - 10, y, "⚡", { fontSize: "20px" });
+    this.add.text(x - 10, y, "⚡", { fontSize: sizeIcons });
   }
 
   decayStats() {
@@ -131,8 +132,8 @@ export default class PetScene extends Phaser.Scene {
     this.stats.energy = Math.max(0, this.stats.energy - 0.7);
     this.drawStats();
 
-    if (this.stats.food < 3) this.showEmoji("🍽️", W2, H8);
-    if (this.stats.energy < 3) this.showEmoji("💤", W2, H8);
+    if (this.stats.food < 3) this.showEmoji("🍽️", W2, H * 0.15);
+    if (this.stats.energy < 3) this.showEmoji("💤", W2, H * 0.2);
   }
 
   petJump() {
