@@ -1,10 +1,12 @@
+import Button from "./button.js";
+
 const W2 = 200;
 const H2 = 400;
 const H4 = H2 / 2;
 const H8 = H4 / 2;
 
-const wb = 100;
-const hb = 30;
+const wb = 200;
+const hb = 60;
 
 // ===== СЦЕНА МЕНЮ =====
 class MenuScene extends Phaser.Scene {
@@ -24,40 +26,22 @@ class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    // 2. Кнопка "Старт" (Графика + Текст)
-    const startBtn = this.add.graphics();
-    startBtn.fillStyle(0x4caf50, 1); // Зеленый
-    startBtn.fillRoundedRect(W2 - wb, H2 - hb, 2 * wb, 2 * hb, 16);
-
-    const startText = this.add
-      .text(W2, H2, "Начать", {
-        fontSize: "28px",
-        color: "#ffffff",
-      })
-      .setOrigin(0.5);
-
-    // 3. Делаем кнопку интерактивной
-    startBtn.setInteractive(
-      new Phaser.Geom.Rectangle(W2 - wb, H2 - hb, 2 * wb, 2 * hb),
-      Phaser.Geom.Rectangle.Contains
+    const startButton = new Button(
+      this, // текущая сцена
+      W2, // x
+      H2, // y
+      "Начать", // текст
+      () => {
+        // callback
+        this.scene.start("PetScene");
+      },
+      {
+        // опции
+        color: 0x4caf50,
+        width: wb,
+        height: hb,
+      }
     );
-
-    startBtn.on("pointerdown", () => {
-      this.scene.start("PetScene");
-    });
-
-    // 4. Анимация кнопки при наведении
-    startBtn.on("pointerover", () => {
-      startBtn.clear();
-      startBtn.fillStyle(0x388e3c, 1); // Темно-зеленый
-      startBtn.fillRoundedRect(W2 - wb, H2 - hb, 2 * wb, 2 * hb, 16);
-    });
-
-    startBtn.on("pointerout", () => {
-      startBtn.clear();
-      startBtn.fillStyle(0x4caf50, 1);
-      startBtn.fillRoundedRect(W2 - wb, H2 - hb, 2 * wb, 2 * hb, 16);
-    });
   }
 }
 
