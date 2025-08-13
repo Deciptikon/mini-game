@@ -25,7 +25,7 @@ export default class PetsScene extends Phaser.Scene {
     // простая сетка
     const w = 150;
     const m = 3;
-    const s = (W - w) / m - w;
+    const s = (W - w) / (m - 1) - w;
 
     const x0 = w / 2;
     const y0 = H2;
@@ -49,6 +49,7 @@ export default class PetsScene extends Phaser.Scene {
             // onClick
             console.log("Клик по иконке!");
             this.gameState.pet.type = key;
+            this.gameState.pet.stats = ListPets[key].stats;
             this.scene.start("PetScene");
           },
           {

@@ -1,3 +1,4 @@
+console.log("start menu");
 import { W2, H2, H4, wb, hb } from "../constants.js";
 import Button from "../components/Button.js";
 

@@ -1,4 +1,6 @@
+console.log("start splash");
 import { W2, H2, H4, wb, hb } from "../constants.js";
+import { ListPets } from "../Pets/ListPets.js";
 
 export default class SplashScene extends Phaser.Scene {
   constructor() {
@@ -7,9 +9,12 @@ export default class SplashScene extends Phaser.Scene {
 
   preload() {
     this.load.image("splash", "./assets/splash.png");
-    this.load.image("cat", "./assets/cat.png");
-    this.load.image("dog", "./assets/dog.png");
-    this.load.image("bird", "./assets/bird.png");
+
+    for (const key in ListPets) {
+      if (ListPets.hasOwnProperty(key)) {
+        this.load.image(key, ListPets[key].image);
+      }
+    }
 
     this.load.on("complete", () => {
       this.time.delayedCall(3000, () => {

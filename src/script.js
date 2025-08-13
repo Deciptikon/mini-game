@@ -1,3 +1,4 @@
+console.log("start");
 import { W, H } from "./constants.js";
 
 import SplashScene from "./scenes/SplashScene.js";
