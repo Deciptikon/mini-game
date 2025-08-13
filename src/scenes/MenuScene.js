@@ -1,6 +1,6 @@
 console.log("start menu");
 import { W2, H2, H4, wb, hb } from "../constants.js";
-import Button from "../components/Button.js";
+import Button from "./src/components/Button.js";
 
 export default class MenuScene extends Phaser.Scene {
   constructor() {

@@ -1,7 +1,7 @@
 import { W, W2, H2, H4, wb, hb } from "../constants.js";
 import { ListPets } from "../Pets/ListPets.js";
 
-import Button from "../components/Button.js";
+import Button from "./src/components/Button.js";
 import IconButton from "../components/IconButton.js";
 
 export default class PetsScene extends Phaser.Scene {

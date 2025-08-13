@@ -1,6 +1,6 @@
 import { W, H, W2, H2, H8, wb, hb, statsCheckTimeOut } from "../constants.js";
-import Button from "../components/Button.js";
-import StatusBar from "../components/StatusBar.js";
+import Button from "./src/components/Button.js";
+import StatusBar from "./src/components/StatusBar.js";
 
 export default class PetScene extends Phaser.Scene {
   constructor() {
