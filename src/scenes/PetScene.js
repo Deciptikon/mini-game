@@ -1,6 +1,6 @@
 import { W, H, W2, H2, H8, wb, hb, statsCheckTimeOut } from "../constants.js";
-import Button from "../components/button.js";
-import StatusBar from "../components/statusbar.js";
+import Button from "../components/Button.js";
+import StatusBar from "../components/StatusBar.js";
 
 export default class PetScene extends Phaser.Scene {
   constructor() {
@@ -10,12 +10,6 @@ export default class PetScene extends Phaser.Scene {
       mood: 5,
       energy: 6,
     };
-  }
-
-  preload() {
-    this.load.image("cat", "./assets/cat.png");
-    this.load.image("dog", "./assets/dog.png");
-    this.load.image("bird", "./assets/bird.png");
   }
 
   create() {

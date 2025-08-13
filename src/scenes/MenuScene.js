@@ -1,5 +1,5 @@
 import { W2, H2, H4, wb, hb } from "../constants.js";
-import Button from "../components/button.js";
+import Button from "../components/Button.js";
 
 export default class MenuScene extends Phaser.Scene {
   constructor() {
@@ -21,9 +21,9 @@ export default class MenuScene extends Phaser.Scene {
       this,
       W2,
       H2,
-      "Начать",
+      "Персонажи",
       () => {
-        this.scene.start("PetScene");
+        this.scene.start("PetsScene");
       },
       {
         color: 0x4caf50,
