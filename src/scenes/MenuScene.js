@@ -1,5 +1,5 @@
-import { W2, H2, wb, hb } from "../constants.js";
-import Button from "../button.js";
+import { W2, H2, H4, wb, hb } from "../constants.js";
+import Button from "../components/button.js";
 
 export default class MenuScene extends Phaser.Scene {
   constructor() {
@@ -8,7 +8,7 @@ export default class MenuScene extends Phaser.Scene {
 
   create() {
     const title = this.add
-      .text(W2, H2 / 2, "Питомец-Эмодзи", {
+      .text(W2, H4, "TamaGotchi", {
         fontSize: "48px",
         fontFamily: "Arial",
         color: "#ffffff",

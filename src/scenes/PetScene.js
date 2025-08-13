@@ -1,10 +1,15 @@
 import { W, H, W2, H2, H8, wb, hb, statsCheckTimeOut } from "../constants.js";
-import Button from "../button.js";
+import Button from "../components/button.js";
+import StatusBar from "../components/statusbar.js";
 
 export default class PetScene extends Phaser.Scene {
   constructor() {
     super({ key: "PetScene" });
-    this.stats = { food: 7, mood: 5, energy: 6 };
+    this.stats = {
+      food: 7,
+      mood: 5,
+      energy: 6,
+    };
   }
 
   preload() {
@@ -14,8 +19,10 @@ export default class PetScene extends Phaser.Scene {
   }
 
   create() {
+    this.gameState = this.game.registry.get("gameState");
+    this.stats = this.gameState.pet.stats;
     this.pet = this.add
-      .sprite(W2, H * 0.3, "cat")
+      .sprite(W2, H * 0.3, this.gameState.pet.type)
       .setScale(0.3)
       .setInteractive();
 
@@ -47,7 +54,10 @@ export default class PetScene extends Phaser.Scene {
       y,
       "Покормить",
       () => {
-        this.stats.food = Math.min(10, this.stats.food + 2);
+        this.gameState.pet.stats.food = Math.min(
+          10,
+          this.gameState.pet.stats.food + 1
+        );
         this.drawStats();
         this.showEmoji("❤️", W2, H8);
       },
@@ -61,7 +71,10 @@ export default class PetScene extends Phaser.Scene {
       y,
       "Поиграть",
       () => {
-        this.stats.mood = Math.min(10, this.stats.mood + 2);
+        this.gameState.pet.stats.mood = Math.min(
+          10,
+          this.gameState.pet.stats.mood + 1
+        );
         this.drawStats();
         this.petJump();
       },
@@ -75,7 +88,10 @@ export default class PetScene extends Phaser.Scene {
       y,
       "Спать",
       () => {
-        this.stats.energy = Math.min(10, this.stats.energy + 2);
+        this.gameState.pet.stats.energy = Math.min(
+          10,
+          this.gameState.pet.stats.energy + 1
+        );
         this.drawStats();
         this.showEmoji("💤", W2, H8);
       },
@@ -99,37 +115,81 @@ export default class PetScene extends Phaser.Scene {
     let y = H2 * 0.9;
     const h = 20;
     const s = 15;
-    const baseColor = 0x555555;
-    const sizeIcons = "25px";
 
     // Еда
-    this.statsBars.fillStyle(baseColor, 1).fillRect(x, y, barWidth, h);
-    this.statsBars
-      .fillStyle(0x5722ff, 1)
-      .fillRect(x, y, barWidth * (this.stats.food / 10), h);
-    this.add.text(x - 10, y, "🍎", { fontSize: sizeIcons });
+    this.foodBar = new StatusBar(
+      this,
+      x,
+      y,
+      "🍎",
+      10,
+      this.gameState.pet.stats.food,
+      0x5722ff,
+      {
+        width: barWidth,
+        height: h,
+        //label: "Голод",
+      }
+    );
 
     // Настроение
     y += h + s;
-    this.statsBars.fillStyle(baseColor, 1).fillRect(x, y, barWidth, h);
-    this.statsBars
-      .fillStyle(0xffeb3b, 1)
-      .fillRect(x, y, barWidth * (this.stats.mood / 10), h);
-    this.add.text(x - 10, y, "😊", { fontSize: sizeIcons });
+    this.moodBar = new StatusBar(
+      this,
+      x,
+      y,
+      "😊",
+      10,
+      this.gameState.pet.stats.mood,
+      0xffeb3b,
+      {
+        width: barWidth,
+        height: h,
+        //label: "Голод",
+      }
+    );
 
     // Энергия
     y += h + s;
-    this.statsBars.fillStyle(baseColor, 1).fillRect(x, y, barWidth, h);
-    this.statsBars
-      .fillStyle(0x4caf50, 1)
-      .fillRect(x, y, barWidth * (this.stats.energy / 10), h);
-    this.add.text(x - 10, y, "⚡", { fontSize: sizeIcons });
+    this.energyBar = new StatusBar(
+      this,
+      x,
+      y,
+      "⚡",
+      10,
+      this.gameState.pet.stats.energy,
+      0x4caf50,
+      {
+        width: barWidth,
+        height: h,
+        //label: "Голод",
+      }
+    );
+
+    this.add.existing(this.foodBar);
+    this.add.existing(this.moodBar);
+    this.add.existing(this.energyBar);
   }
 
   decayStats() {
-    this.stats.food = Math.max(0, this.stats.food - 1);
-    this.stats.mood = Math.max(0, this.stats.mood - 0.5);
-    this.stats.energy = Math.max(0, this.stats.energy - 0.7);
+    this.gameState.pet.stats.food = Math.max(
+      0,
+      this.gameState.pet.stats.food - 1
+    );
+    this.gameState.pet.stats.mood = Math.max(
+      0,
+      this.gameState.pet.stats.mood - 0.5
+    );
+    this.gameState.pet.stats.energy = Math.max(
+      0,
+      this.gameState.pet.stats.energy - 0.7
+    );
+
+    // Обновляем UI
+    this.foodBar.updateValue(this.gameState.pet.stats.food);
+    this.moodBar.updateValue(this.gameState.pet.stats.mood);
+    this.energyBar.updateValue(this.gameState.pet.stats.energy);
+
     this.drawStats();
 
     if (this.stats.food < 3) this.showEmoji("🍽️", W2, H * 0.15);
