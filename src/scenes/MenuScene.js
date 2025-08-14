@@ -9,7 +9,7 @@ export default class MenuScene extends Phaser.Scene {
 
   create() {
     const title = this.add
-      .text(W2, H4, "TamaGotchi", {
+      .text(W2, H4, "Animalisto", {
         fontSize: "48px",
         fontFamily: "Arial",
         color: "#ffffff",
@@ -18,13 +18,49 @@ export default class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    const startButton = new Button(
+    const s = hb / 4;
+    const x = W2;
+    let y = H2;
+
+    const petsButton = new Button(
       this,
-      W2,
-      H2,
+      x,
+      y,
       "Персонажи",
       () => {
         this.scene.start("PetsScene");
+      },
+      {
+        color: 0x4caf50,
+        width: wb,
+        height: hb,
+      }
+    );
+
+    y += hb + s;
+    const houseButton = new Button(
+      this,
+      x,
+      y,
+      "Дом",
+      () => {
+        this.scene.start("HouseScene");
+      },
+      {
+        color: 0x4caf50,
+        width: wb,
+        height: hb,
+      }
+    );
+
+    y += hb + s;
+    const achievementsButton = new Button(
+      this,
+      x,
+      y,
+      "Достижения",
+      () => {
+        this.scene.start("AchievementsScene");
       },
       {
         color: 0x4caf50,

@@ -5,6 +5,8 @@ import SplashScene from "./scenes/SplashScene.js";
 import MenuScene from "./scenes/MenuScene.js";
 import PetScene from "./scenes/PetScene.js";
 import PetsScene from "./scenes/PetsScene.js";
+import AchievementsScene from "./scenes/AchievementsScene.js";
+import HouseScene from "./scenes/HouseScene.js";
 
 import GameState from "./GameState.js";
 
@@ -15,7 +17,14 @@ const config = {
   type: Phaser.CANVAS,
   width: W,
   height: H,
-  scene: [SplashScene, MenuScene, PetsScene, PetScene],
+  scene: [
+    SplashScene,
+    MenuScene,
+    PetsScene,
+    PetScene,
+    AchievementsScene,
+    HouseScene,
+  ],
   backgroundColor: "#9bd6ff",
 };
 
