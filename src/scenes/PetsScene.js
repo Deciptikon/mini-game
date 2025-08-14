@@ -12,6 +12,13 @@ export default class PetsScene extends Phaser.Scene {
   create() {
     this.gameState = this.game.registry.get("gameState");
 
+    // Кнопка возврата в меню
+    new Button(this, 50, 50, "<--", () => this.scene.start("MenuScene"), {
+      color: 0x2196f3,
+      width: 80,
+      height: 40,
+    });
+
     const title = this.add
       .text(W2, H4, "Выбор", {
         fontSize: "48px",

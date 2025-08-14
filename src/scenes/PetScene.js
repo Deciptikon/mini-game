@@ -18,8 +18,8 @@ export default class PetScene extends Phaser.Scene {
 
     this.tweens.add({
       targets: this.pet,
-      scale: 0.4,
-      duration: 1000,
+      scale: 0.35,
+      duration: 2000,
       yoyo: true,
       repeat: -1,
     });
@@ -91,7 +91,7 @@ export default class PetScene extends Phaser.Scene {
     );*/
 
     // Кнопка возврата в меню
-    new Button(this, 50, 50, "<--", () => this.scene.start("MenuScene"), {
+    new Button(this, 50, 50, "<--", () => this.scene.start("PetsScene"), {
       color: 0x2196f3,
       width: 80,
       height: 40,
@@ -107,7 +107,7 @@ export default class PetScene extends Phaser.Scene {
     let y = H2 * 0.9;
     const h = 20;
     const s = 15;
-    const color = 0x888888;
+    const color = 0xbb22bb;
 
     // HP
     this.hpBar = new StatusBar(
