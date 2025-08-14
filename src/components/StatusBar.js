@@ -37,11 +37,18 @@ export default class StatusBar extends Phaser.GameObjects.Container {
 
     // Создаем текстовую метку (если есть)
     this.label = null;
+    this.number = null;
     if (label) {
       this.label = scene.add
-        .text(width + 15, height / 2, label, {
+        .text(width / 2, height / 2, label, {
           fontSize: Math.max(12, height * 0.8),
-          color: "#ffffff",
+          color: "#ffffffff",
+        })
+        .setOrigin(0.5);
+      this.number = scene.add
+        .text(width + 5, height / 2, this.currentValue, {
+          fontSize: Math.max(12, height),
+          color: "#111111ff",
         })
         .setOrigin(0, 0.5);
     }
@@ -66,7 +73,10 @@ export default class StatusBar extends Phaser.GameObjects.Container {
 
     // Добавляем все элементы в контейнер
     const children = [this.baseBar, this.fillBar, this.icon];
-    if (this.label) children.push(this.label);
+    if (this.label) {
+      children.push(this.label);
+      children.push(this.number);
+    }
     this.add(children);
 
     // Позиционируем контейнер

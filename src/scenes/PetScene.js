@@ -5,11 +5,7 @@ import StatusBar from "../components/StatusBar.js";
 export default class PetScene extends Phaser.Scene {
   constructor() {
     super({ key: "PetScene" });
-    this.stats = {
-      food: 7,
-      mood: 5,
-      energy: 6,
-    };
+    this.stats = {};
   }
 
   create() {
@@ -28,12 +24,13 @@ export default class PetScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    /** 
     this.statDecayTimer = this.time.addEvent({
       delay: statsCheckTimeOut,
       callback: this.decayStats,
       callbackScope: this,
       loop: true,
-    });
+    });*/
 
     this.drawStats();
 
@@ -41,6 +38,7 @@ export default class PetScene extends Phaser.Scene {
     const s = hb + 15;
     const x = W2;
 
+    /** 
     // Кнопки действий
     new Button(
       this,
@@ -90,7 +88,7 @@ export default class PetScene extends Phaser.Scene {
         this.showEmoji("💤", W2, H8);
       },
       { color: 0xe91e63, width: wb, height: hb }
-    );
+    );*/
 
     // Кнопка возврата в меню
     new Button(this, 50, 50, "<--", () => this.scene.start("MenuScene"), {
@@ -109,60 +107,115 @@ export default class PetScene extends Phaser.Scene {
     let y = H2 * 0.9;
     const h = 20;
     const s = 15;
+    const color = 0x888888;
 
-    // Еда
-    this.foodBar = new StatusBar(
+    // HP
+    this.hpBar = new StatusBar(
       this,
       x,
       y,
-      "🍎",
+      "❤️",
       10,
-      this.gameState.pet.stats.food,
-      0x5722ff,
+      this.gameState.pet.stats.hp,
+      color,
       {
         width: barWidth,
         height: h,
-        //label: "Голод",
+        label: "HP",
       }
     );
 
-    // Настроение
+    // Защита
     y += h + s;
-    this.moodBar = new StatusBar(
+    this.guardBar = new StatusBar(
       this,
       x,
       y,
-      "😊",
+      "🛡️",
       10,
-      this.gameState.pet.stats.mood,
-      0xffeb3b,
+      this.gameState.pet.stats.guard,
+      color,
       {
         width: barWidth,
         height: h,
-        //label: "Голод",
+        label: "Защита",
       }
     );
 
-    // Энергия
+    // Незаметность
     y += h + s;
-    this.energyBar = new StatusBar(
+    this.invisibleBar = new StatusBar(
       this,
       x,
       y,
-      "⚡",
+      "👤",
       10,
-      this.gameState.pet.stats.energy,
-      0x4caf50,
+      this.gameState.pet.stats.invisible,
+      color,
       {
         width: barWidth,
         height: h,
-        //label: "Голод",
+        label: "Незаметность",
       }
     );
 
-    this.add.existing(this.foodBar);
-    this.add.existing(this.moodBar);
-    this.add.existing(this.energyBar);
+    // Скорость
+    y += h + s;
+    this.speedBar = new StatusBar(
+      this,
+      x,
+      y,
+      "👻",
+      10,
+      this.gameState.pet.stats.speed,
+      color,
+      {
+        width: barWidth,
+        height: h,
+        label: "Скорость",
+      }
+    );
+
+    // Осторожность
+    y += h + s;
+    this.cautionBar = new StatusBar(
+      this,
+      x,
+      y,
+      "👀",
+      10,
+      this.gameState.pet.stats.caution,
+      color,
+      {
+        width: barWidth,
+        height: h,
+        label: "Осторожность",
+      }
+    );
+
+    // Уклонение
+    y += h + s;
+    this.dodgeBar = new StatusBar(
+      this,
+      x,
+      y,
+      "🌀",
+      10,
+      this.gameState.pet.stats.dodge,
+      color,
+      {
+        width: barWidth,
+        height: h,
+        label: "Уклонение",
+      }
+    );
+
+    this.add.existing(this.hpBar);
+    this.add.existing(this.guardBar);
+    this.add.existing(this.invisibleBar);
+    this.add.existing(this.speedBar);
+    this.add.existing(this.cautionBar);
+    this.add.existing(this.dodgeBar);
   }
 
   decayStats() {

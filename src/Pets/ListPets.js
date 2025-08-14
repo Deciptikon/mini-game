@@ -1,33 +1,45 @@
 export const ListPets = {
   cat: {
     stats: {
-      food: 4,
-      mood: 4,
-      energy: 6,
+      hp: 4, // жизнь
+      guard: 4, // защита
+      invisible: 6, // незаметность
+      speed: 6, // скорость
+      caution: 6, // осторожность
+      dodge: 5, // уклонение
     },
     image: "./assets/cat.png",
   },
   dog: {
     stats: {
-      food: 7,
-      mood: 5,
-      energy: 5,
+      hp: 8, // жизнь
+      guard: 4, // защита
+      invisible: 3, // незаметность
+      speed: 6, // скорость
+      caution: 3, // осторожность
+      dodge: 3, // уклонение
     },
     image: "./assets/dog.png",
   },
   bird: {
     stats: {
-      food: 2,
-      mood: 2,
-      energy: 9,
+      hp: 2, // жизнь
+      guard: 1, // защита
+      invisible: 9, // незаметность
+      speed: 8, // скорость
+      caution: 8, // осторожность
+      dodge: 5, // уклонение
     },
     image: "./assets/bird.png",
   },
   hedgehog: {
     stats: {
-      food: 8,
-      mood: 2,
-      energy: 2,
+      hp: 5, // жизнь
+      guard: 9, // защита
+      invisible: 1, // незаметность
+      speed: 3, // скорость
+      caution: 4, // осторожность
+      dodge: 3, // уклонение
     },
     image: "./assets/hedgehog.png",
   },
