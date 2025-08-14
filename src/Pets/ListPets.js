@@ -23,4 +23,12 @@ export const ListPets = {
     },
     image: "./assets/bird.png",
   },
+  hedgehog: {
+    stats: {
+      food: 8,
+      mood: 2,
+      energy: 2,
+    },
+    image: "./assets/hedgehog.png",
+  },
 };

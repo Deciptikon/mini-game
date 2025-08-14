@@ -23,11 +23,11 @@ export default class PetsScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     // простая сетка
-    const w = 150;
+    const w = 110;
     const m = 3;
-    const s = (W - w) / (m - 1) - w;
+    const s = (W - m * w) / (m + 1);
 
-    const x0 = w / 2;
+    const x0 = w / 2 + s;
     const y0 = H2;
 
     let i = 0;
