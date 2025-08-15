@@ -25,7 +25,7 @@ export default class SplashScene extends Phaser.Scene {
     this.load.on("complete", () => {
       //this.progressBar.destroy();
       console.log(`Loading complete`);
-      this.time.delayedCall(9000, () => {
+      this.time.delayedCall(3000, () => {
         this.scene.start("MenuScene");
       });
     });
