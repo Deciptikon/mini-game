@@ -2,6 +2,7 @@ console.log("start map");
 import { ListLoc } from "../Map/ListLoc.js";
 import LocationPoint from "../components/LocationPoint.js";
 import Button from "../components/Button.js";
+import { createButtonBack } from "../components/functions.js";
 
 export default class MapScene extends Phaser.Scene {
   constructor() {
@@ -20,17 +21,18 @@ export default class MapScene extends Phaser.Scene {
       .setInteractive();
 
     this.locationsContainer = this.add.container(0, 0);
-    ListLoc.regions.forEach((region) => {
-      region.locations.forEach((location) => {
+    for (const id in ListLoc) {
+      if (ListLoc.hasOwnProperty(id)) {
+        const location = ListLoc[id];
         const point = new LocationPoint(
           this,
           location.position.x,
           location.position.y,
-          location
+          id
         );
         this.locationsContainer.add(point);
-      });
-    });
+      }
+    }
 
     this.cameras.main.setBounds(0, 0, this.mapWidth, this.mapHeight);
     //this.physics.world.setBounds(0, 0, this.mapWidth, this.mapHeight);
@@ -65,17 +67,11 @@ export default class MapScene extends Phaser.Scene {
     });
 
     // Кнопка возврата
-    new Button(this, 50, 50, "<--", () => this.scene.start("MenuScene"), {
-      color: 0x2196f3,
-      width: 80,
-      height: 40,
-    })
-      .setScrollFactor(0)
-      .setDepth(1000);
+    createButtonBack(this).setScrollFactor(0).setDepth(1000);
 
     // Обработчик выбора локации
     this.events.on("locationSelected", (locationId) => {
-      this.scene.start("LocationScene", { locationId });
+      this.scene.start("LocationInfoScene", { locationId });
     });
   }
 }

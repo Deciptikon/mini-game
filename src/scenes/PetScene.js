@@ -1,6 +1,7 @@
 import { W, H, W2, H2, H8, wb, hb, statsCheckTimeOut } from "../constants.js";
 import Button from "../components/Button.js";
 import StatusBar from "../components/StatusBar.js";
+import { createButtonBack } from "../components/functions.js";
 
 export default class PetScene extends Phaser.Scene {
   constructor() {
@@ -91,11 +92,7 @@ export default class PetScene extends Phaser.Scene {
     );*/
 
     // Кнопка возврата в меню
-    new Button(this, 50, 50, "<--", () => this.scene.start("PetsScene"), {
-      color: 0x2196f3,
-      width: 80,
-      height: 40,
-    });
+    createButtonBack(this, "PetsScene");
   }
 
   drawStats() {

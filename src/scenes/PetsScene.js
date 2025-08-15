@@ -4,6 +4,8 @@ import { ListPets } from "../Pets/ListPets.js";
 import Button from "../components/Button.js";
 import IconButton from "../components/IconButton.js";
 
+import { createButtonBack } from "../components/functions.js";
+
 export default class PetsScene extends Phaser.Scene {
   constructor() {
     super({ key: "PetsScene" });
@@ -13,11 +15,7 @@ export default class PetsScene extends Phaser.Scene {
     this.gameState = this.game.registry.get("gameState");
 
     // Кнопка возврата в меню
-    new Button(this, 50, 50, "<--", () => this.scene.start("MenuScene"), {
-      color: 0x2196f3,
-      width: 80,
-      height: 40,
-    });
+    createButtonBack(this);
 
     const title = this.add
       .text(W2, H4, "Выбор", {

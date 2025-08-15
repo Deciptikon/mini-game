@@ -1,8 +1,11 @@
+import { ListLoc } from "../Map/ListLoc.js";
+
 export default class LocationPoint extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, locationData) {
+  constructor(scene, x, y, locationId) {
     super(scene, x, y);
     scene.add.existing(this);
     this.originalIconScale = 0.2;
+    this.locationData = ListLoc[locationId];
 
     // Основной круг
     this.circle = scene.add
@@ -11,13 +14,13 @@ export default class LocationPoint extends Phaser.GameObjects.Container {
 
     // Иконка типа локации
     this.icon = scene.add
-      .sprite(0, 0, `icon_loc_${locationData.id}`) //`icon_${locationData.type}`
+      .sprite(0, 0, `icon_loc_${locationId}`) //`icon_${locationData.type}`
       .setOrigin(0.5, 0.75)
       .setScale(this.originalIconScale);
 
     // Название локации
     this.label = scene.add
-      .text(0, 40, locationData.name, {
+      .text(0, 40, this.locationData.name, {
         fontSize: "16px",
         color: "#FFFFFF",
         backgroundColor: "#000000",
@@ -33,11 +36,11 @@ export default class LocationPoint extends Phaser.GameObjects.Container {
       .on("pointerover", () => this.onHover())
       .on("pointerout", () => this.onOut())
       .on("pointerdown", () =>
-        this.scene.events.emit("locationSelected", locationData.id)
+        this.scene.events.emit("locationSelected", locationId)
       );
 
     // Для неоткрытых локаций
-    if (!locationData.discovered) {
+    if (!this.locationData.discovered) {
       this.setLocked();
     }
   }
