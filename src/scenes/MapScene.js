@@ -22,15 +22,13 @@ export default class MapScene extends Phaser.Scene {
     this.locationsContainer = this.add.container(0, 0);
     ListLoc.regions.forEach((region) => {
       region.locations.forEach((location) => {
-        if (location.discovered) {
-          const point = new LocationPoint(
-            this,
-            location.position.x,
-            location.position.y,
-            location
-          );
-          this.locationsContainer.add(point);
-        }
+        const point = new LocationPoint(
+          this,
+          location.position.x,
+          location.position.y,
+          location
+        );
+        this.locationsContainer.add(point);
       });
     });
 
