@@ -8,11 +8,7 @@ export default class GameState {
 
     this.pet = {
       type: "cat",
-      stats: {
-        food: 7,
-        mood: 5,
-        energy: 6,
-      },
+      stats: {},
       level: 1,
       experience: 0,
     };
