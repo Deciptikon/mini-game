@@ -7,6 +7,7 @@ export const ListPets = {
       speed: 6, // скорость
       caution: 6, // осторожность
       dodge: 5, // уклонение
+      // добавить Мораль
     },
     image: "./assets/cat.png",
   },

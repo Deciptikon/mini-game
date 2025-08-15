@@ -1,6 +1,7 @@
 console.log("start splash");
 import { W2, H2, H4, wb, hb } from "../constants.js";
 import { ListPets } from "../Pets/ListPets.js";
+import { ListLoc } from "../Map/ListLoc.js";
 
 export default class SplashScene extends Phaser.Scene {
   constructor() {
@@ -15,6 +16,24 @@ export default class SplashScene extends Phaser.Scene {
         this.load.image(key, ListPets[key].image);
       }
     }
+
+    this.load.image("map_texture", "./assets/map_texture.png");
+    ListLoc.regions.forEach((region) => {
+      region.locations.forEach((location) => {
+        this.load.image(`icon_loc_${location.id}`, location.sprite);
+      });
+    });
+
+    /** 
+    for (const zone in ListLoc) {
+      if (ListLoc.hasOwnProperty(zone)) {
+        for (const loc in ListLoc[zone]) {
+          if (ListLoc[zone].hasOwnProperty(loc)) {
+            this.load.image(loc, ListLoc[zone].image);
+          }
+        }
+      }
+    }*/
 
     this.load.on("complete", () => {
       this.time.delayedCall(3000, () => {

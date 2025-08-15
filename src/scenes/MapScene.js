@@ -1,0 +1,83 @@
+console.log("start map");
+import { ListLoc } from "../Map/ListLoc.js";
+import LocationPoint from "../components/LocationPoint.js";
+import Button from "../components/Button.js";
+
+export default class MapScene extends Phaser.Scene {
+  constructor() {
+    super({ key: "MapScene" });
+  }
+
+  create() {
+    this.gameState = this.game.registry.get("gameState");
+
+    this.mapWidth = 1920;
+    this.mapHeight = 1080;
+
+    this.mapBg = this.add
+      .tileSprite(0, 0, this.mapWidth, this.mapHeight, "map_texture")
+      .setOrigin(0)
+      .setInteractive();
+
+    this.locationsContainer = this.add.container(0, 0);
+    ListLoc.regions.forEach((region) => {
+      region.locations.forEach((location) => {
+        if (location.discovered) {
+          const point = new LocationPoint(
+            this,
+            location.position.x,
+            location.position.y,
+            location
+          );
+          this.locationsContainer.add(point);
+        }
+      });
+    });
+
+    this.cameras.main.setBounds(0, 0, this.mapWidth, this.mapHeight);
+    //this.physics.world.setBounds(0, 0, this.mapWidth, this.mapHeight);
+
+    this.input.on("pointerdown", (pointer) => {
+      if (pointer.button === 0) {
+        this.dragStart = { x: pointer.x, y: pointer.y };
+      }
+    });
+
+    this.input.on("pointermove", (pointer) => {
+      if (pointer.isDown) {
+        const dx = (pointer.x - this.dragStart.x) / this.cameras.main.zoom;
+        const dy = (pointer.y - this.dragStart.y) / this.cameras.main.zoom;
+
+        this.cameras.main.scrollX -= dx;
+        this.cameras.main.scrollY -= dy;
+
+        this.dragStart = { x: pointer.x, y: pointer.y };
+      }
+    });
+
+    this.input.on("wheel", (pointer, deltaY) => {
+      const zoomStep = 0.1;
+      const newZoom = Phaser.Math.Clamp(
+        this.cameras.main.zoom + (deltaY > 0 ? -zoomStep : zoomStep),
+        0.5,
+        2
+      );
+
+      this.cameras.main.zoomTo(newZoom, 300);
+    });
+
+    // Кнопка возврата
+    new Button(this, 50, 50, "<--", () => this.scene.start("MenuScene"), {
+      color: 0x2196f3,
+      width: 80,
+      height: 40,
+    })
+      .setScrollFactor(0)
+      .setDepth(1000);
+
+    // Обработчик выбора локации
+    this.events.on("locationSelected", (locationId) => {
+      this.scene.start("LocationScene", { locationId });
+    });
+  }
+}

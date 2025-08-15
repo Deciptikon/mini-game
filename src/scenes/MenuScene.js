@@ -54,6 +54,22 @@ export default class MenuScene extends Phaser.Scene {
     );
 
     y += hb + s;
+    const mapButton = new Button(
+      this,
+      x,
+      y,
+      "Карта",
+      () => {
+        this.scene.start("MapScene");
+      },
+      {
+        color: 0x4caf50,
+        width: wb,
+        height: hb,
+      }
+    );
+
+    y += hb + s;
     const achievementsButton = new Button(
       this,
       x,

@@ -5,6 +5,7 @@ import SplashScene from "./scenes/SplashScene.js";
 import MenuScene from "./scenes/MenuScene.js";
 import PetScene from "./scenes/PetScene.js";
 import PetsScene from "./scenes/PetsScene.js";
+import MapScene from "./scenes/MapScene.js";
 import AchievementsScene from "./scenes/AchievementsScene.js";
 import HouseScene from "./scenes/HouseScene.js";
 
@@ -22,6 +23,7 @@ const config = {
     MenuScene,
     PetsScene,
     PetScene,
+    MapScene,
     AchievementsScene,
     HouseScene,
   ],

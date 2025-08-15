@@ -1,4 +1,4 @@
-console.log("start menu");
+console.log("start achievements");
 import { W2, H2, H4, wb, hb } from "../constants.js";
 import Button from "../components/Button.js";
 
