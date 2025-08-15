@@ -1,3 +1,4 @@
+import { W } from "../constants.js";
 import Button from "./Button.js";
 
 // Кнопка возврата в меню

@@ -1,4 +1,4 @@
-import { W, W2, H2, H4, wb, hb } from "../constants.js";
+import { W, W2, H2, H4, wb, hb, isMobile } from "../constants.js";
 import { ListPets } from "../Pets/ListPets.js";
 
 import Button from "../components/Button.js";
@@ -29,7 +29,7 @@ export default class PetsScene extends Phaser.Scene {
 
     // простая сетка
     const w = 110;
-    const m = 3;
+    const m = isMobile ? 3 : 9;
     const s = (W - m * w) / (m + 1);
 
     const x0 = w / 2 + s;

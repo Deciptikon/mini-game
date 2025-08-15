@@ -1,5 +1,5 @@
 console.log("start splash");
-import { W, H, W2, H2 } from "../constants.js";
+import { W, H, W2, H2, isMobile } from "../constants.js";
 import { ListPets } from "../Pets/ListPets.js";
 import { ListLoc } from "../Map/ListLoc.js";
 
@@ -47,7 +47,17 @@ export default class SplashScene extends Phaser.Scene {
   }
 
   create() {
-    this.splash = this.add.sprite(W2, H2, "splash").setScale(1).setOrigin(0.5);
+    if (isMobile) {
+      this.splash = this.add
+        .sprite(W2, H2, "splash")
+        .setScale(1)
+        .setOrigin(0.5);
+    } else {
+      this.splash = this.add
+        .sprite(W2, H * 0.5, "splash")
+        .setScale(1)
+        .setOrigin(0.5);
+    }
   }
 
   // Создание элементов прогресс-бара

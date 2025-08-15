@@ -17,7 +17,7 @@ gameState.loadFromLocalStorage();
 
 const config = {
   type: Phaser.CANVAS,
-  width: W,
+  width: W, // Вертикальный макет для мобилок / альбомный для ПК
   height: H,
   scene: [
     SplashScene,

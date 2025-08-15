@@ -22,7 +22,7 @@ export const ListLoc = {
     unlockRequirement: "pet_level > 3",
   },
   rubikon: {
-    name: "Рубикон>",
+    name: "<Рубикон>",
     position: { x: 1000, y: 500 },
     type: "tower",
     discovered: true,
