@@ -18,14 +18,7 @@ export default class GameState {
       items: ["food_basic", "toy_ball"],
     };
 
-    this.locations = {
-      id: "forest",
-      name: "Тайный лес",
-      position: { x: 300, y: 200 },
-      type: "forest",
-      discovered: true,
-      sprite: "./loc_sprite.png",
-    };
+    this.currentLocation = "lake";
   }
 
   saveToLocalStorage() {

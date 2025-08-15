@@ -30,6 +30,11 @@ const config = {
     LocationInfoScene,
   ],
   backgroundColor: "#9bd6ff",
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    parent: "game-container",
+  },
 };
 
 const game = new Phaser.Game(config);

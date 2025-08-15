@@ -21,4 +21,25 @@ export const ListLoc = {
     icon_sprite: "./assets/loc_sprite.png",
     unlockRequirement: "pet_level > 3",
   },
+  rubikon: {
+    name: "Рубикон>",
+    position: { x: 1000, y: 500 },
+    type: "tower",
+    discovered: true,
+    icon_sprite: "./assets/loc_sprite.png",
+  },
+  desert_of_night: {
+    name: "Пустыня ночи",
+    position: { x: 1500, y: 900 },
+    type: "sand",
+    discovered: true,
+    icon_sprite: "./assets/loc_sprite.png",
+  },
+  x_island: {
+    name: "Остров X",
+    position: { x: 1850, y: 750 },
+    type: ["forest", "mountain"],
+    discovered: true,
+    icon_sprite: "./assets/loc_sprite.png",
+  },
 };

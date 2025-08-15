@@ -1,5 +1,7 @@
 console.log("start map");
+import { H, H2, W, W2 } from "../constants.js";
 import { ListLoc } from "../Map/ListLoc.js";
+
 import LocationPoint from "../components/LocationPoint.js";
 import Button from "../components/Button.js";
 import { createButtonBack } from "../components/functions.js";
@@ -30,6 +32,18 @@ export default class MapScene extends Phaser.Scene {
           location.position.y,
           id
         );
+        if (id === this.gameState.currentLocation) {
+          this.cameras.main.scrollX = Math.max(
+            0,
+            Math.min(this.mapWidth - W, location.position.x - W2) /
+              this.cameras.main.zoom
+          );
+          this.cameras.main.scrollY = Math.max(
+            0,
+            Math.min(this.mapHeight - H, location.position.y - H2) /
+              this.cameras.main.zoom
+          );
+        }
         this.locationsContainer.add(point);
       }
     }
@@ -71,6 +85,7 @@ export default class MapScene extends Phaser.Scene {
 
     // Обработчик выбора локации
     this.events.on("locationSelected", (locationId) => {
+      this.gameState.currentLocation = locationId;
       this.scene.start("LocationInfoScene", { locationId });
     });
   }
