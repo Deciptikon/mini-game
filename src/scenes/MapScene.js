@@ -14,15 +14,19 @@ export default class MapScene extends Phaser.Scene {
   create() {
     this.gameState = this.game.registry.get("gameState");
 
+    // Размеры карты
     this.mapWidth = 1920;
     this.mapHeight = 1080;
 
+    // Основной слой карты
     this.mapBg = this.add
       .tileSprite(0, 0, this.mapWidth, this.mapHeight, "map_texture")
       .setOrigin(0)
       .setInteractive();
 
+    // Контейнер для точек локаций
     this.locationsContainer = this.add.container(0, 0);
+
     for (const id in ListLoc) {
       if (ListLoc.hasOwnProperty(id)) {
         const location = ListLoc[id];
@@ -30,60 +34,57 @@ export default class MapScene extends Phaser.Scene {
           this,
           location.position.x,
           location.position.y,
-          id
+          id,
+          ListLoc[id]
         );
         if (id === this.gameState.currentLocation) {
           this.cameras.main.scrollX = Math.max(
             0,
-            Math.min(this.mapWidth - W, location.position.x - W2) /
-              this.cameras.main.zoom
+            Math.min(this.mapWidth - W, location.position.x - W2)
           );
           this.cameras.main.scrollY = Math.max(
             0,
-            Math.min(this.mapHeight - H, location.position.y - H2) /
-              this.cameras.main.zoom
+            Math.min(this.mapHeight - H, location.position.y - H2)
           );
         }
         this.locationsContainer.add(point);
       }
     }
 
+    // Настройка камеры
     this.cameras.main.setBounds(0, 0, this.mapWidth, this.mapHeight);
-    //this.physics.world.setBounds(0, 0, this.mapWidth, this.mapHeight);
 
+    // Кнопка возврата (в координатах экрана)
+    const backButton = createButtonBack(this)
+      .setPosition(50, 50)
+      .setScrollFactor(0)
+      .setDepth(1000);
+
+    // Обработчики событий для карты
     this.input.on("pointerdown", (pointer) => {
-      if (pointer.button === 0) {
-        this.dragStart = { x: pointer.x, y: pointer.y };
+      if (
+        pointer.button === 0 &&
+        !backButton.getBounds().contains(pointer.x, pointer.y)
+      ) {
+        this.dragStart = {
+          x: pointer.x,
+          y: pointer.y,
+          scrollX: this.cameras.main.scrollX,
+          scrollY: this.cameras.main.scrollY,
+        };
       }
     });
 
     this.input.on("pointermove", (pointer) => {
-      if (pointer.isDown) {
+      if (pointer.isDown && this.dragStart) {
         const dx = (pointer.x - this.dragStart.x) / this.cameras.main.zoom;
         const dy = (pointer.y - this.dragStart.y) / this.cameras.main.zoom;
 
-        this.cameras.main.scrollX -= dx;
-        this.cameras.main.scrollY -= dy;
-
-        this.dragStart = { x: pointer.x, y: pointer.y };
+        this.cameras.main.scrollX = this.dragStart.scrollX - dx;
+        this.cameras.main.scrollY = this.dragStart.scrollY - dy;
       }
     });
 
-    this.input.on("wheel", (pointer, deltaY) => {
-      const zoomStep = 0.1;
-      const newZoom = Phaser.Math.Clamp(
-        this.cameras.main.zoom + (deltaY > 0 ? -zoomStep : zoomStep),
-        0.5,
-        2
-      );
-
-      this.cameras.main.zoomTo(newZoom, 300);
-    });
-
-    // Кнопка возврата
-    createButtonBack(this).setScrollFactor(0).setDepth(1000);
-
-    // Обработчик выбора локации
     this.events.on("locationSelected", (locationId) => {
       this.gameState.currentLocation = locationId;
       this.scene.start("LocationInfoScene", { locationId });

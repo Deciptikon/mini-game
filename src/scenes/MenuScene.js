@@ -24,7 +24,7 @@ export default class MenuScene extends Phaser.Scene {
         this,
         W - 50,
         50,
-        "[=]",
+        this.scale.isFullscreen ? "[=]" : "[ ]",
         () => {
           if (this.scale.isFullscreen) {
             this.scale.stopFullscreen();

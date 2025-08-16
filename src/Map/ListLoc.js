@@ -4,6 +4,7 @@ export const ListLoc = {
     position: { x: 500, y: 400 },
     type: "forest",
     discovered: true,
+    level: 0,
     icon_sprite: "./assets/loc_sprite.png",
   },
   lake: {
@@ -11,6 +12,7 @@ export const ListLoc = {
     position: { x: 300, y: 200 },
     type: "water",
     discovered: true,
+    level: 1,
     icon_sprite: "./assets/loc_sprite.png",
   },
   eagle_peak: {
@@ -18,6 +20,7 @@ export const ListLoc = {
     position: { x: 800, y: 100 },
     type: "mountain",
     discovered: false,
+    level: 2,
     icon_sprite: "./assets/loc_sprite.png",
     unlockRequirement: "pet_level > 3",
   },
@@ -26,13 +29,15 @@ export const ListLoc = {
     position: { x: 1000, y: 500 },
     type: "tower",
     discovered: true,
+    level: 3,
     icon_sprite: "./assets/loc_sprite.png",
   },
   desert_of_night: {
     name: "Пустыня ночи",
     position: { x: 1500, y: 900 },
     type: "sand",
-    discovered: true,
+    discovered: false,
+    level: 4,
     icon_sprite: "./assets/loc_sprite.png",
   },
   x_island: {
@@ -40,6 +45,7 @@ export const ListLoc = {
     position: { x: 1850, y: 750 },
     type: ["forest", "mountain"],
     discovered: true,
+    level: 6,
     icon_sprite: "./assets/loc_sprite.png",
   },
 };

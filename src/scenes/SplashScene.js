@@ -41,8 +41,11 @@ export default class SplashScene extends Phaser.Scene {
     this.load.image("map_texture", "./src/Map/map_texture.png");
     for (const id in ListLoc) {
       if (ListLoc.hasOwnProperty(id)) {
-        this.load.image(`icon_loc_${id}`, ListLoc[id].icon_sprite);
+        //this.load.image(`icon_loc_${id}`, ListLoc[id].icon_sprite);
       }
+    }
+    for (let i = 0; i <= 6; i++) {
+      this.load.image(`loc_sprite_${i}`, `./assets/loc_sprite_${i}.png`);
     }
   }
 

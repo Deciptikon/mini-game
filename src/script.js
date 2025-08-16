@@ -31,9 +31,10 @@ const config = {
   ],
   backgroundColor: "#9bd6ff",
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.FIT, //Phaser.Scale.ENVELOP
     autoCenter: Phaser.Scale.CENTER_BOTH,
     parent: "game-container",
+    backgroundColor: "#9bd6ff",
   },
 };
 

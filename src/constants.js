@@ -1,8 +1,8 @@
 // Рахмеры холста и сопряженные параметры
 export const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
 
-export const W = isMobile ? 386 : 1450;
-export const H = 800;
+export const W = isMobile ? 540 : 1920;
+export const H = 1080;
 export const W2 = W / 2;
 export const H2 = H / 2;
 export const H4 = H / 4;
