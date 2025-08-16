@@ -26,5 +26,20 @@ export default class LocationInfoScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     createButtonBack(this, "MapScene");
+
+    new Button(
+      this,
+      W2,
+      H2,
+      "GO",
+      () => {
+        this.scene.start("LocationScene");
+      },
+      {
+        color: 0x4caf50,
+        width: wb,
+        height: hb,
+      }
+    );
   }
 }

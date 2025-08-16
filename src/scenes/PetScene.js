@@ -1,4 +1,4 @@
-import { W, H, W2, H2, H8, wb, hb, statsCheckTimeOut } from "../constants.js";
+import { W, H, W2, H2, H8, wb, hb } from "../constants.js";
 import Button from "../components/Button.js";
 import StatusBar from "../components/StatusBar.js";
 import { createButtonBack } from "../components/functions.js";
@@ -27,7 +27,7 @@ export default class PetScene extends Phaser.Scene {
 
     /** 
     this.statDecayTimer = this.time.addEvent({
-      delay: statsCheckTimeOut,
+      delay: 1000,
       callback: this.decayStats,
       callbackScope: this,
       loop: true,

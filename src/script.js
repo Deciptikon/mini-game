@@ -9,6 +9,7 @@ import MapScene from "./scenes/MapScene.js";
 import AchievementsScene from "./scenes/AchievementsScene.js";
 import HouseScene from "./scenes/HouseScene.js";
 import LocationInfoScene from "./scenes/LocationInfoScene.js";
+import LocationScene from "./scenes/LocationScene.js";
 
 import GameState from "./GameState.js";
 
@@ -28,6 +29,7 @@ const config = {
     AchievementsScene,
     HouseScene,
     LocationInfoScene,
+    LocationScene,
   ],
   backgroundColor: "#9bd6ff",
   scale: {

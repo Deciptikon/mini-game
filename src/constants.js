@@ -13,4 +13,7 @@ export const wb = 200;
 export const hb = 60;
 
 // Интервал обновления статов персонажа, ms
-export const statsCheckTimeOut = 3000;
+export const mapUpdateTimeOut = 1000;
+
+// Размер одного тайла
+export const tileSize = 64;
