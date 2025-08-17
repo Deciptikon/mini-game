@@ -9,7 +9,7 @@ export default class MenuScene extends Phaser.Scene {
 
   create() {
     const title = this.add
-      .text(W2, H4, "Animalisto", {
+      .text(W2, H4, "XPet", {
         fontSize: "48px",
         fontFamily: "Arial",
         color: "#ffffff",

@@ -21,5 +21,5 @@ export const tileSize = 64;
 export const tileCount = 4 * 4;
 
 // размеры карты (в тайлах)
-export const mapWidthTile = 32;
-export const mapHeightTile = 32;
+export const mapWidthTile = 16;
+export const mapHeightTile = 16;

@@ -86,8 +86,46 @@ export default class LocationScene extends Phaser.Scene {
     this.petContainer.add(this.pet.sprite);
 
     // Настройка камеры
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    const cx = (map.widthInPixels - this.sys.game.config.width) / 2;
+    const cy = (map.heightInPixels - this.sys.game.config.height) / 2;
+    if (map.widthInPixels > this.sys.game.config.width) {
+      if (map.heightInPixels > this.sys.game.config.height) {
+        this.cameras.main.setBounds(
+          0,
+          0,
+          map.widthInPixels,
+          map.heightInPixels
+        );
+      } else {
+        this.cameras.main.setBounds(
+          0,
+          cy,
+          map.widthInPixels,
+          map.heightInPixels
+        );
+      }
+    } else {
+      if (map.heightInPixels > this.sys.game.config.height) {
+        this.cameras.main.setBounds(
+          cx,
+          0,
+          map.widthInPixels,
+          map.heightInPixels
+        );
+      } else {
+        this.cameras.main.setBounds(
+          cx,
+          cy,
+          map.widthInPixels,
+          map.heightInPixels
+        );
+      }
+    }
+
     this.cameras.main.roundPixels = true;
+
+    this.cameras.main.scrollX = cx;
+    this.cameras.main.scrollY = cy;
 
     // Кнопка возврата (в координатах экрана)
     const backButton = createButtonBack(this, "MapScene")
