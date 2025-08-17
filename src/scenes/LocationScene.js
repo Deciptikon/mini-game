@@ -10,6 +10,7 @@ import { ListLoc } from "../Map/ListLoc.js";
 import Button from "../components/Button.js";
 import {
   createButtonBack,
+  generateLMatrix,
   generateRandomMatrix,
   rndInt,
   tileToWorld,
@@ -34,12 +35,18 @@ export default class LocationScene extends Phaser.Scene {
     this.pet.y = 5;
 
     // Матрица карты
+    const mapMatrix = generateLMatrix(
+      mapHeightTile,
+      mapWidthTile,
+      [10, 1, 1, 1]
+    );
+    /** 
     const mapMatrix = generateRandomMatrix(
       mapHeightTile,
       mapWidthTile,
       tileCount
     );
-    /** 
+    
     const mapMatrix = [
       [0, 0, 1, 0],
       [1, 1, 0, 2],
