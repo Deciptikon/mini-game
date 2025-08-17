@@ -17,3 +17,9 @@ export const mapUpdateTimeOut = 1000;
 
 // Размер одного тайла
 export const tileSize = 64;
+// количество типов тайлов
+export const tileCount = 4 * 4;
+
+// размеры карты (в тайлах)
+export const mapWidthTile = 32;
+export const mapHeightTile = 32;

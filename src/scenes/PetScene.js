@@ -229,11 +229,6 @@ export default class PetScene extends Phaser.Scene {
       this.gameState.pet.stats.energy - 0.7
     );
 
-    // Обновляем UI
-    this.foodBar.updateValue(this.gameState.pet.stats.food);
-    this.moodBar.updateValue(this.gameState.pet.stats.mood);
-    this.energyBar.updateValue(this.gameState.pet.stats.energy);
-
     this.drawStats();
 
     if (this.stats.food < 3) this.showEmoji("🍽️", W2, H * 0.15);

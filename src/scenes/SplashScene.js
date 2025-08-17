@@ -48,7 +48,7 @@ export default class SplashScene extends Phaser.Scene {
       this.load.image(`loc_sprite_${i}`, `./assets/loc_sprite_${i}.png`);
     }
 
-    this.load.image("tileset", "./src/Map/tileset.png");
+    this.load.image("tileset", "./src/Map/tileset2_x64.png");
   }
 
   create() {

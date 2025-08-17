@@ -18,8 +18,7 @@ export default class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    if (true) {
-      //!isMobile
+    if (!isMobile) {
       const fullscreenButton = new Button(
         this,
         W - 50,
