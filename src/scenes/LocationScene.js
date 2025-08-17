@@ -5,7 +5,10 @@ import {
   tileCount,
   mapHeightTile,
   mapWidthTile,
+  OBL,
+  dK,
 } from "../constants.js";
+
 import { ListLoc } from "../Map/ListLoc.js";
 import Button from "../components/Button.js";
 import {
@@ -13,8 +16,12 @@ import {
   generateLMatrix,
   generateRandomMatrix,
   rndInt,
+  rndL,
   tileToWorld,
+  getLocality,
 } from "../components/functions.js";
+import { TA, TileInfo } from "../Map/TileInfo.js";
+import { Pet } from "../Pets/Pet.js";
 
 export default class LocationScene extends Phaser.Scene {
   constructor() {
@@ -30,24 +37,30 @@ export default class LocationScene extends Phaser.Scene {
     this.gameState = this.game.registry.get("gameState");
     this.locationId = this.gameState.currentLocation;
 
+    /**
+ * 
+
     this.pet = this.gameState.pet;
     this.pet.x = 3;
-    this.pet.y = 5;
+    this.pet.y = 5; */
 
     // Матрица карты
-    const mapMatrix = generateLMatrix(
+    this.mapMatrix = generateLMatrix(
       mapHeightTile,
       mapWidthTile,
-      [10, 1, 1, 1]
+      [10, 1, 5, 1]
     );
+
+    //console.log(mapMatrix);
+
     /** 
-    const mapMatrix = generateRandomMatrix(
+    this.mapMatrix = generateRandomMatrix(
       mapHeightTile,
       mapWidthTile,
       tileCount
     );
     
-    const mapMatrix = [
+    this.mapMatrix = [
       [0, 0, 1, 0],
       [1, 1, 0, 2],
       [2, 0, 1, 1],
@@ -57,15 +70,15 @@ export default class LocationScene extends Phaser.Scene {
     const map = this.make.tilemap({
       tileWidth: tileSize,
       tileHeight: tileSize,
-      width: mapMatrix[0].length, // ширина в тайлах
-      height: mapMatrix.length, // высота в тайлах
+      width: this.mapMatrix[0].length, // ширина в тайлах
+      height: this.mapMatrix.length, // высота в тайлах
     });
 
     const tileset = map.addTilesetImage("tileset", null, tileSize, tileSize);
 
     const layer = map.createBlankLayer("mainLayer", tileset);
 
-    mapMatrix.forEach((row, y) => {
+    this.mapMatrix.forEach((row, y) => {
       row.forEach((tileId, x) => {
         layer.putTileAt(tileId, x, y); // tileId соответствует порядку в тайлсете
       });
@@ -74,7 +87,6 @@ export default class LocationScene extends Phaser.Scene {
     this.entitiesContainer = this.add.container(0, 0);
     this.petContainer = this.add.container(0, 0);
 
-    // Аналогично для врагов
     this.wolf = this.add
       .sprite(tileToWorld(7), tileToWorld(7), "dog")
       .setScale(0.1)
@@ -82,14 +94,13 @@ export default class LocationScene extends Phaser.Scene {
     this.entitiesContainer.add(this.wolf);
 
     // Создание питомца
-    this.pet.sprite = this.add
-      .sprite(
-        tileToWorld(this.pet.x),
-        tileToWorld(this.pet.y),
-        this.gameState.pet.type
-      )
+
+    const pet_sprite = this.add
+      .sprite(tileToWorld(5), tileToWorld(3), this.gameState.pet.type)
       .setScale(0.1)
       .setOrigin(0.5);
+
+    this.pet = new Pet(this.gameState.pet, pet_sprite, this.mapMatrix, 5, 3);
     this.petContainer.add(this.pet.sprite);
 
     // Настройка камеры
@@ -142,10 +153,8 @@ export default class LocationScene extends Phaser.Scene {
 
   updateState() {
     console.log("Update...");
-    [this.pet.x, this.pet.y] = this.getValidPositionPet(this.pet.x, this.pet.y);
-
-    this.pet.sprite.x = tileToWorld(this.pet.x);
-    this.pet.sprite.y = tileToWorld(this.pet.y);
+    //[this.pet.x, this.pet.y] = this.getValidPositionPet(this.pet.x, this.pet.y);
+    this.pet.doStep();
 
     this.wolf.x -= tileSize;
   }
@@ -176,12 +185,34 @@ export default class LocationScene extends Phaser.Scene {
     // - Бонусы от предметов
     // - Угрозы (волки, ловушки)
 
-    let dx = 0;
-    let dy = 0;
+    const loc = getLocality(this.mapMatrix, x, y);
 
-    dx = Phaser.Math.Between(-1, 1);
-    dy = Phaser.Math.Between(-1, 1);
+    let prob = [0, 0, 0, 0, 0, 0, 0, 0];
+    for (let i = 0; i < loc.length; i++) {
+      const t = loc[i];
+      prob[i] = 1;
+      if (TileInfo[t].types.includes(TA.WATER)) {
+        prob[i] = 0; // боится воды
+      }
+      if (TileInfo[t].types.includes(TA.MOUNTAINE)) {
+        prob[i] = 5; // любит горы
+      }
+    }
 
-    return [x + dx, y + dy];
+    const r = rndL(prob);
+
+    return [x + OBL[r].x, y + OBL[r].y];
+  }
+
+  update() {
+    //console.log("upd");
+    /**
+    const dx = tileToWorld(this.pet.x) - this.pet.sprite.x;
+    const dy = tileToWorld(this.pet.y) - this.pet.sprite.y;
+
+    this.pet.sprite.x += dx * dK;
+
+    this.pet.sprite.y += dy * dK;*/
+    this.pet.update();
   }
 }

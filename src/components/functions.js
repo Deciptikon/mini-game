@@ -1,4 +1,4 @@
-import { tileSize, W } from "../constants.js";
+import { OBL, tileSize, W } from "../constants.js";
 import Button from "./Button.js";
 
 // Кнопка возврата в меню
@@ -34,18 +34,25 @@ function generateListW(list) {
   for (let i = 0; i < list.length - 1; i++) {
     listW.push(listW[listW.length - 1] + list[i] / total);
   }
-  console.log(listW);
+  //console.log(listW);
 
   return listW;
 }
 
 function rndW(listW) {
   const p = Math.random();
+  //console.log(`p = ${p}`);
   let r = 0;
   for (let i = 0; i < listW.length; i++) {
     if (p > listW[i]) r = i;
   }
+  //console.log(`listW = ${listW}`);
+  //console.log(`i = ${r}`);
   return r;
+}
+
+export function rndL(list) {
+  return rndW(generateListW(list));
 }
 
 /**
@@ -79,4 +86,25 @@ export function rndInt(k) {
     return -r;
   }
   return r;
+}
+
+export function getLocality(map, x, y) {
+  const maxX = map[0].length - 1;
+  const maxY = map.length - 1;
+  let L = [0, 0, 0, 0, 0, 0, 0, 0];
+
+  for (let dir = 0; dir < 8; dir++) {
+    const X = Math.floor(OBL[`${dir}`].x + x);
+    if (X < 0 || X > maxX) {
+      L[dir] = -1;
+      continue;
+    }
+    const Y = Math.floor(OBL[`${dir}`].y + y);
+    if (Y < 0 || Y > maxY) {
+      L[dir] = -1;
+      continue;
+    }
+    L[dir] = map[Y][X];
+  }
+  return L;
 }
