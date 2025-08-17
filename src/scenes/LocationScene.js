@@ -95,39 +95,12 @@ export default class LocationScene extends Phaser.Scene {
     // Настройка камеры
     const cx = (map.widthInPixels - this.sys.game.config.width) / 2;
     const cy = (map.heightInPixels - this.sys.game.config.height) / 2;
-    if (map.widthInPixels > this.sys.game.config.width) {
-      if (map.heightInPixels > this.sys.game.config.height) {
-        this.cameras.main.setBounds(
-          0,
-          0,
-          map.widthInPixels,
-          map.heightInPixels
-        );
-      } else {
-        this.cameras.main.setBounds(
-          0,
-          cy,
-          map.widthInPixels,
-          map.heightInPixels
-        );
-      }
-    } else {
-      if (map.heightInPixels > this.sys.game.config.height) {
-        this.cameras.main.setBounds(
-          cx,
-          0,
-          map.widthInPixels,
-          map.heightInPixels
-        );
-      } else {
-        this.cameras.main.setBounds(
-          cx,
-          cy,
-          map.widthInPixels,
-          map.heightInPixels
-        );
-      }
-    }
+    const mw = map.widthInPixels;
+    const mh = map.heightInPixels;
+    const gw = this.sys.game.config.width;
+    const gh = this.sys.game.config.height;
+
+    this.cameras.main.setBounds(mw > gw ? 0 : cx, mh > gh ? 0 : cy, mw, mh);
 
     this.cameras.main.roundPixels = true;
 
