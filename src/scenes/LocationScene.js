@@ -27,6 +27,7 @@ export default class LocationScene extends Phaser.Scene {
   constructor() {
     super({ key: "LocationScene" });
     this.locationId = null;
+    this.timeOut = 1000;
   }
 
   init(data) {
@@ -36,6 +37,7 @@ export default class LocationScene extends Phaser.Scene {
   create() {
     this.gameState = this.game.registry.get("gameState");
     this.locationId = this.gameState.currentLocation;
+    this.timeOut = 3000 - 2500 * (this.gameState.pet.stats.speed / 10);
 
     /**
  * 
@@ -143,19 +145,26 @@ export default class LocationScene extends Phaser.Scene {
     this.input.on("pointerup", () => (isDragging = false));
 
     /** */
-    this.statDecayTimer = this.time.addEvent({
-      delay: mapUpdateTimeOut,
-      callback: this.updateState,
+    this.petUpdateTimer = this.time.addEvent({
+      delay: this.timeOut,
+      callback: this.petStep,
+      callbackScope: this,
+      loop: true,
+    });
+
+    this.predatorUpdateTimer = this.time.addEvent({
+      delay: 1500,
+      callback: this.predatorStep,
       callbackScope: this,
       loop: true,
     });
   }
 
-  updateState() {
-    console.log("Update...");
-    //[this.pet.x, this.pet.y] = this.getValidPositionPet(this.pet.x, this.pet.y);
+  petStep() {
     this.pet.doStep();
+  }
 
+  predatorStep() {
     this.wolf.x -= tileSize;
   }
 

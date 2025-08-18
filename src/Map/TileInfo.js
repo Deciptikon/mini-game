@@ -1,8 +1,16 @@
 export const TA = {
-  GRASS: "grass",
-  SAND: "sand",
-  WATER: "water",
-  MOUNTAINE: "mountaine",
+  GRASS: "grass", // степи
+  SAND: "sand", // пустыни
+  WATER: "water", // моря
+  MOUNTAINE: "mountaine", // горы
+  // леса
+  // болота
+  // тундры
+  // бэдленды
+  // снега
+  // льды
+  // лавы
+  // города
 };
 
 export const TileInfo = {

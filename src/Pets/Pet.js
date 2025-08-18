@@ -58,7 +58,11 @@ export class Pet {
   }
 
   doStep() {
+    this.prob = [0, 0, 0, 0, 0, 0, 0, 0];
+
     this.probFromLocality();
+    this.probFromWeather();
+    this.probFromPredators();
 
     let isValid = false;
     const r = rndL(this.prob);
@@ -71,12 +75,8 @@ export class Pet {
     if (isValid) {
       this.x = newX;
       this.y = newY;
-    } else {
-      console.log(`not valid. newX=${newX} | newY=${newY}`);
-      console.log(`prob = ${this.prob}`);
     }
 
-    //
-    this.prob = [0, 0, 0, 0, 0, 0, 0, 0];
+    //здесь обновить счётчики
   }
 }
