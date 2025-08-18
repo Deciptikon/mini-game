@@ -1,5 +1,4 @@
 export const TA = {
-  GROUND: "ground",
   GRASS: "grass",
   SAND: "sand",
   WATER: "water",
@@ -7,8 +6,8 @@ export const TA = {
 };
 
 export const TileInfo = {
-  0: { types: [TA.GRASS, TA.GROUND] },
-  1: { types: [TA.SAND, TA.GROUND] },
+  0: { types: [TA.GRASS] },
+  1: { types: [TA.SAND] },
   2: { types: [TA.WATER] },
-  3: { types: [TA.MOUNTAINE, TA.GROUND] },
+  3: { types: [TA.MOUNTAINE] },
 };

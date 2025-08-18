@@ -1,3 +1,5 @@
+import { TA } from "../Map/TileInfo.js";
+
 export const ListPets = {
   cat: {
     stats: {
@@ -8,6 +10,12 @@ export const ListPets = {
       caution: 6, // осторожность
       dodge: 5, // уклонение
       // добавить Мораль
+    },
+    probs: {
+      [TA.WATER]: 0,
+      [TA.MOUNTAINE]: 1,
+      [TA.SAND]: 1,
+      [TA.GRASS]: 3,
     },
     image: "./assets/cat.png",
   },
@@ -20,6 +28,12 @@ export const ListPets = {
       caution: 3, // осторожность
       dodge: 3, // уклонение
     },
+    probs: {
+      [TA.WATER]: 0,
+      [TA.MOUNTAINE]: 2,
+      [TA.SAND]: 1,
+      [TA.GRASS]: 4,
+    },
     image: "./assets/dog.png",
   },
   bird: {
@@ -31,6 +45,12 @@ export const ListPets = {
       caution: 8, // осторожность
       dodge: 5, // уклонение
     },
+    probs: {
+      [TA.WATER]: 1,
+      [TA.MOUNTAINE]: 3,
+      [TA.SAND]: 1,
+      [TA.GRASS]: 2,
+    },
     image: "./assets/bird.png",
   },
   hedgehog: {
@@ -41,6 +61,12 @@ export const ListPets = {
       speed: 3, // скорость
       caution: 4, // осторожность
       dodge: 3, // уклонение
+    },
+    probs: {
+      [TA.WATER]: 0,
+      [TA.MOUNTAINE]: 1,
+      [TA.SAND]: 0,
+      [TA.GRASS]: 2,
     },
     image: "./assets/hedgehog.png",
   },

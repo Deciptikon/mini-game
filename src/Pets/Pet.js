@@ -40,11 +40,11 @@ export class Pet {
         continue;
       }
       this.prob[i] = 1;
-      if (TileInfo[t].types.includes(TA.WATER)) {
-        this.prob[i] = 0; // боится воды
-      }
-      if (TileInfo[t].types.includes(TA.MOUNTAINE)) {
-        this.prob[i] = 5; // любит горы
+      for (const type of TileInfo[t].types) {
+        const TYPE = `${type}`.toUpperCase();
+        if (TA.hasOwnProperty(TYPE)) {
+          this.prob[i] = this.pet.probs[TA[TYPE]];
+        }
       }
     }
   }

@@ -9,6 +9,7 @@ export default class GameState {
     this.pet = {
       type: "cat",
       stats: {},
+      prob: {},
       level: 1,
       experience: 0,
     };

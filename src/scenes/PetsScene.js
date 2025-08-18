@@ -55,6 +55,7 @@ export default class PetsScene extends Phaser.Scene {
             console.log("Клик по иконке!");
             this.gameState.pet.type = key;
             this.gameState.pet.stats = ListPets[key].stats;
+            this.gameState.pet.probs = ListPets[key].probs;
             this.scene.start("PetScene");
           },
           {
