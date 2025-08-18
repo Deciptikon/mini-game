@@ -18,7 +18,7 @@ export default class PetsScene extends Phaser.Scene {
     createButtonBack(this);
 
     const title = this.add
-      .text(W2, H4, "Выбор", {
+      .text(W2, H4, "Персонажи", {
         fontSize: "48px",
         fontFamily: "Arial",
         color: "#ffffff",
