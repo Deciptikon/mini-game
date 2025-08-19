@@ -13,7 +13,7 @@ export default class PetScene extends Phaser.Scene {
     this.gameState = this.game.registry.get("gameState");
     this.stats = this.gameState.pet.stats;
     this.pet = this.add
-      .sprite(W2, H * 0.3, this.gameState.pet.type)
+      .sprite(W2, H * 0.3, `image_${this.gameState.pet.type}`)
       .setScale(0.3)
       .setInteractive();
 

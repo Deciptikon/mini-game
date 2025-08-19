@@ -1,3 +1,5 @@
+export const GAME_NAME = "XPets";
+
 // Рахмеры холста и сопряженные параметры
 export const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
 

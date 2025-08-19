@@ -1,3 +1,11 @@
+export const saveLocsPrefix = "loc";
+export const SaveLocsData = {
+  unlocken: false,
+  discoveredLevel: 0, // всего 7 уровней (0-6)
+
+  countOfGame: 0, // количество игр на локации
+};
+
 export const ListLoc = {
   forest: {
     name: "Тайный лес",

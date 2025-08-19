@@ -1,5 +1,16 @@
 import { TA } from "../Map/TileInfo.js";
 
+export const savePetsPrefix = "pet";
+export const SavePetsData = {
+  level: 1, //        уровень
+  experience: 0, //   опыт
+  unlocked: false, //  питомец разблокирован
+
+  countOfloc: 0, //   количество пройденных локаций
+  timeInLoc: 0, //    количество секунд в игре
+  countOfDeath: 0, // количество смертей
+};
+
 export const ListPets = {
   cat: {
     stats: {

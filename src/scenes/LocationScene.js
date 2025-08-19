@@ -90,7 +90,7 @@ export default class LocationScene extends Phaser.Scene {
     this.petContainer = this.add.container(0, 0);
 
     this.wolf = this.add
-      .sprite(tileToWorld(7), tileToWorld(7), "dog")
+      .sprite(tileToWorld(7), tileToWorld(7), `image_${"dog"}`)
       .setScale(0.1)
       .setOrigin(0.5);
     this.entitiesContainer.add(this.wolf);
@@ -98,7 +98,11 @@ export default class LocationScene extends Phaser.Scene {
     // Создание питомца
 
     const pet_sprite = this.add
-      .sprite(tileToWorld(5), tileToWorld(3), this.gameState.pet.type)
+      .sprite(
+        tileToWorld(5),
+        tileToWorld(3),
+        `image_${this.gameState.pet.type}`
+      )
       .setScale(0.1)
       .setOrigin(0.5);
 

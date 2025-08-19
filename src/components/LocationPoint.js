@@ -13,7 +13,7 @@ export default class LocationPoint extends Phaser.GameObjects.Container {
 
     // Иконка типа локации
     this.icon = scene.add
-      .sprite(0, 0, `loc_sprite_${LocationData.level}`) //`icon_${locationData.type}`
+      .sprite(0, 0, `loc_lvl_${LocationData.level}`) //`icon_${locationData.type}`
       .setOrigin(0.5, 0.75)
       .setScale(this.originalIconScale);
 

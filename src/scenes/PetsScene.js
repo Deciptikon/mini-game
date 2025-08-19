@@ -48,7 +48,7 @@ export default class PetsScene extends Phaser.Scene {
           y,
           w,
           w,
-          key,
+          `image_${key}`,
           "",
           () => {
             // onClick

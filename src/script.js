@@ -14,7 +14,9 @@ import LocationScene from "./scenes/LocationScene.js";
 import GameState from "./GameState.js";
 
 export const gameState = new GameState();
-gameState.loadFromLocalStorage();
+gameState.load();
+gameState.data.pets.cat.unlocked = true;
+console.log(gameState.data);
 
 const config = {
   type: Phaser.CANVAS,
@@ -45,5 +47,5 @@ const game = new Phaser.Game(config);
 game.registry.set("gameState", gameState);
 
 window.addEventListener("beforeunload", () => {
-  gameState.saveToLocalStorage();
+  gameState.save();
 });

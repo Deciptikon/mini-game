@@ -2,6 +2,7 @@ console.log("start splash");
 import { W, H, W2, H2, isMobile } from "../constants.js";
 import { ListPets } from "../Pets/ListPets.js";
 import { ListLoc } from "../Map/ListLoc.js";
+import { ListItems } from "../Items/ListItems.js";
 
 const w = W * 0.75; // относительная длина полосы загрузки
 const h = 10; // высота полосы
@@ -32,11 +33,8 @@ export default class SplashScene extends Phaser.Scene {
 
     this.load.image("splash", "./assets/splash.png");
 
-    for (const key in ListPets) {
-      if (ListPets.hasOwnProperty(key)) {
-        this.load.image(key, ListPets[key].image);
-      }
-    }
+    this.loadFromKollection(ListPets, ["image", "icon"]);
+    this.loadFromKollection(ListItems, ["image", "icon"]);
 
     this.load.image("map_texture", "./src/Map/map_texture.png");
     /**for (const id in ListLoc) {
@@ -45,10 +43,23 @@ export default class SplashScene extends Phaser.Scene {
       }
     }*/
     for (let i = 0; i <= 6; i++) {
-      this.load.image(`loc_sprite_${i}`, `./assets/loc_sprite_${i}.png`);
+      this.load.image(`loc_lvl_${i}`, `./assets/loc_lvl_${i}.png`);
     }
 
     this.load.image("tileset", "./src/Map/tileset3_x64.png");
+  }
+
+  loadFromKollection(kollection, list_property, prefix = "") {
+    for (const key in kollection) {
+      if (kollection.hasOwnProperty(key)) {
+        for (let property of list_property) {
+          const path = kollection[key]?.[property];
+          if (path !== null && path !== undefined && path !== "undefined") {
+            this.load.image(`${prefix}${property}_${key}`, path);
+          }
+        }
+      }
+    }
   }
 
   create() {
