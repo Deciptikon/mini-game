@@ -1,3 +1,5 @@
+import AchievementsScene from "./scenes/AchievementsScene";
+
 export default class GameState {
   constructor() {
     this.settings = {
@@ -8,18 +10,81 @@ export default class GameState {
 
     this.pet = {
       type: "cat",
-      stats: {},
-      prob: {},
-      level: 1,
-      experience: 0,
-    };
 
-    this.inventory = {
-      coins: 100,
-      items: ["food_basic", "toy_ball"],
+      // неизменные данные, но модифицируемые в каждой локации
+      stats: {}, // статы
+      prob: {}, // вероятности наступить на ячейку
+
+      // изменяемые (нужно сохранять)
+      inventory: [], // список найденных предметов на локации
+      level: 1, //      уровень
+      experience: 0, // опыт
+
+      // заполняемые
+      items: [], //     список надетых предметов
     };
 
     this.currentLocation = "lake";
+
+    // хранимые/загружаемые данные
+    this.data = {
+      // игровые ресурсы
+      resources: {
+        coins: 100,
+        crystall: 7,
+        recepts: 2,
+      },
+
+      // статистика по всем питомцам
+      pets: {
+        cat: {
+          level: 1, //        уровень
+          experience: 0, //   опыт
+          unlocked: true, //  питомец разблокирован
+
+          countOfloc: 0, //   количество пройденных локаций
+          timeInLoc: 0, //    количество секунд в игре
+          countOfDeath: 0, // количество смертей
+          //
+        },
+        dog: {
+          //
+        },
+        //
+      },
+
+      // Статистика по всем предметам
+      items: {
+        eyeOfStorm: {
+          unlocked: true,
+          place: "PET.NONE", // 'PET.CAT'  ||  'PET.DOG'  || ....
+          slot: 2, // слот в инвентаре питомца
+
+          countOfLoc: 0, // количество завершенных миссий с этим предметом
+        },
+        axe: {},
+        //
+      },
+
+      // статистика по локациям
+      locations: {
+        forest: {
+          unlocken: true,
+          discoveredLevel: 0, // всего 7 уровней (0-6)
+
+          countOfGame: 0, // количество игр на локации
+        },
+        lake: {},
+        //
+      },
+
+      // игровые достижения (качественные и количественные)
+      achievements: {
+        handOfGods: true,
+        strongWarriors: 12,
+        //....
+      },
+    };
   }
 
   saveToLocalStorage() {
