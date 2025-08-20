@@ -1,12 +1,14 @@
 import { getLocality, rndL, tileToWorld } from "../components/functions.js";
-import { dK, OBL } from "../constants.js";
+import { dK, OBL, sizeOfInventory } from "../constants.js";
+import { ListItems } from "../Items/ListItems.js";
 import { TA, TileInfo } from "../Map/TileInfo.js";
+import { ListPets } from "./ListPets.js";
 
 export class Pet {
   constructor(pet, spritePet, map, x, y) {
     this.pet = pet;
     this.map = map;
-    this.prob = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.prob = new Array(8).fill(0);
     this.sprite = spritePet;
     this.mapWidth = map[0].length;
     this.mapHeight = map.length;
@@ -41,9 +43,9 @@ export class Pet {
       }
       this.prob[i] = 1;
       for (const type of TileInfo[t].types) {
-        const TYPE = `${type}`.toUpperCase();
-        if (TA.hasOwnProperty(TYPE)) {
-          this.prob[i] = this.pet.probs[TA[TYPE]];
+        //const TYPE = `${type}`.toUpperCase();
+        if (TA.hasOwnProperty(type)) {
+          this.prob[i] = this.pet.probs[TA[type]];
         }
       }
     }
@@ -58,7 +60,7 @@ export class Pet {
   }
 
   doStep() {
-    this.prob = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.prob = new Array(8).fill(0);
 
     this.probFromLocality();
     this.probFromWeather();
@@ -79,4 +81,30 @@ export class Pet {
 
     //здесь обновить счётчики
   }
+}
+
+export function fullUpdateStats(gameState, petId) {
+  const pet = {};
+  pet.stats = ListPets[petId].stats;
+  pet.probs = ListPets[petId].probs;
+  pet.level = gameState.data.pets[petId].level;
+  pet.experiens = gameState.data.pets[petId].experiens;
+
+  pet.items = new Array(sizeOfInventory).fill(null);
+  for (const key in ListItems) {
+    const itemInfo = ListItems[key];
+    const itemSave = gameState.data.items[key];
+    if (itemSave.unlocked === true && itemSave.place === petId) {
+      pet.items[Number(itemSave.slot)] = {
+        key: key,
+        item: itemInfo,
+      };
+    }
+  }
+  for (const slot of pet.items) {
+    if (slot !== null) {
+      slot.item?.modifyStats(pet);
+    }
+  }
+  return pet;
 }

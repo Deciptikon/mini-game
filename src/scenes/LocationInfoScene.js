@@ -1,5 +1,16 @@
 console.log("start LocationInfoScene");
-import { W2, H2, H4, wb, hb } from "../constants.js";
+import {
+  H,
+  W2,
+  H2,
+  H4,
+  wb,
+  hb,
+  middleText,
+  smallText,
+  bigText,
+  W,
+} from "../constants.js";
 import { ListLoc } from "../Map/ListLoc.js";
 import Button from "../components/Button.js";
 import { createButtonBack } from "../components/functions.js";
@@ -15,15 +26,16 @@ export default class LocationInfoScene extends Phaser.Scene {
   }
 
   create() {
+    this.gameState = this.game.registry.get("gameState");
+
     const title = this.add
-      .text(W2, H4, `Локация: ${ListLoc[this.locationId].name}`, {
-        fontSize: "24px",
-        fontFamily: "Arial",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 4,
-      })
+      .text(W2, H4, `Локация: ${ListLoc[this.locationId].name}`, bigText)
       .setOrigin(0.5);
+
+    const description = this.add
+      .text(W2, H * 0.35, `${ListLoc[this.locationId].description}`, middleText)
+      .setOrigin(0.5)
+      .setWordWrapWidth(W * 0.9);
 
     createButtonBack(this, "MapScene");
 

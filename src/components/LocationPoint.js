@@ -1,7 +1,7 @@
 import { ListLoc } from "../Map/ListLoc.js";
 
 export default class LocationPoint extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, locationId, LocationData) {
+  constructor(scene, x, y, locationId, locationInfo, LocationData) {
     super(scene, x, y);
     scene.add.existing(this);
     this.originalIconScale = 0.2;
@@ -19,7 +19,7 @@ export default class LocationPoint extends Phaser.GameObjects.Container {
 
     // Название локации
     this.label = scene.add
-      .text(0, 40, LocationData.name, {
+      .text(0, 40, locationInfo.name, {
         fontSize: "16px",
         color: "#FFFFFF",
         backgroundColor: "#000000",
@@ -39,7 +39,7 @@ export default class LocationPoint extends Phaser.GameObjects.Container {
       );
 
     // Для неоткрытых локаций
-    if (!LocationData.discovered) {
+    if (!LocationData.unlocked) {
       this.setLocked();
     }
   }

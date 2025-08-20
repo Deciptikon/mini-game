@@ -16,6 +16,11 @@ import GameState from "./GameState.js";
 export const gameState = new GameState();
 gameState.load();
 gameState.data.pets.cat.unlocked = true;
+gameState.data.locations.forest.unlocked = true;
+
+gameState.data.items.walnut.unlocked = true;
+gameState.data.items.walnut.place = "cat";
+
 console.log(gameState.data);
 
 const config = {

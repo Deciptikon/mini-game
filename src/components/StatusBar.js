@@ -29,6 +29,11 @@ export default class StatusBar extends Phaser.GameObjects.Container {
     this.maxValue = maxValue;
     this.currentValue = currentValue;
 
+    // подложка для иконки
+    this.circle = scene.add
+      .circle(0, height * 0.5, 20, fillColor)
+      .setStrokeStyle(3, 0x222222);
+
     // Создаем иконку
     this.icon = scene.add
       .text(0, 0, icon, { fontSize: iconSize })
@@ -72,7 +77,7 @@ export default class StatusBar extends Phaser.GameObjects.Container {
       );
 
     // Добавляем все элементы в контейнер
-    const children = [this.baseBar, this.fillBar, this.icon];
+    const children = [this.baseBar, this.fillBar, this.circle, this.icon];
     if (this.label) {
       children.push(this.label);
       children.push(this.number);

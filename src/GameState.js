@@ -10,12 +10,18 @@ import { SaveSetingsData, saveSetingsPrefix } from "./Settings.js";
 
 export default class GameState {
   constructor() {
+    // текущая локация
+    this.currentLocation = "forest";
+    // текущий питомец
+    this.currentPet = "cat";
+
+    // отображаемый питомец (с модификациями от предметов и скиллов)
     this.pet = {
       type: "cat",
 
       // неизменные данные, но модифицируемые в каждой локации
       stats: {}, // статы
-      prob: {}, // вероятности наступить на ячейку
+      probs: {}, // вероятности наступить на ячейку
 
       // изменяемые (нужно сохранять)
       inventory: [], // список найденных предметов на локации
@@ -26,9 +32,12 @@ export default class GameState {
       items: [], //     список надетых предметов
     };
 
-    this.currentLocation = "lake";
+    // конструируем локацию, с учетом модификации предметами
+    this.location = {
+      //
+    };
 
-    // хранимые/загружаемые данные
+    // хранимые/загружаемые данные---------------------------------------------
     this.data = {
       // игровые ресурсы
       resources: {
@@ -59,7 +68,7 @@ export default class GameState {
       items: {
         eyeOfStorm: {
           unlocked: true,
-          place: "PET.NONE", // 'PET.CAT'  ||  'PET.DOG'  || ....
+          place: "none", // 'PET.CAT'  ||  'PET.DOG'  || ....
           slot: 2, // слот в инвентаре питомца
 
           countOfLoc: 0, // количество завершенных миссий с этим предметом

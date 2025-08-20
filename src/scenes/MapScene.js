@@ -35,7 +35,8 @@ export default class MapScene extends Phaser.Scene {
           location.position.x,
           location.position.y,
           id,
-          ListLoc[id]
+          location,
+          this.gameState.data.locations[id]
         );
         if (id === this.gameState.currentLocation) {
           this.cameras.main.scrollX = Math.max(

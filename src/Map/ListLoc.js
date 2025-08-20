@@ -1,7 +1,7 @@
 export const saveLocsPrefix = "loc";
 export const SaveLocsData = {
-  unlocken: false,
-  discoveredLevel: 0, // всего 7 уровней (0-6)
+  unlocked: false,
+  level: 0, // всего 7 уровней (0-6)
 
   countOfGame: 0, // количество игр на локации
 };
@@ -11,49 +11,56 @@ export const ListLoc = {
     name: "Тайный лес",
     position: { x: 500, y: 400 },
     type: "forest",
-    discovered: true,
-    level: 0,
-    icon_sprite: "./assets/loc_sprite.png",
+    description:
+      "Полулесная локация, много лужаек, мало озёр. \nВерный способ прокачать персонажа.",
+
+    icon: "./src/Map/icon/forest.png",
+    image: "./src/Map/image/forest.png",
   },
   lake: {
     name: "Озеро слез",
     position: { x: 300, y: 200 },
     type: "water",
-    discovered: true,
-    level: 1,
-    icon_sprite: "./assets/loc_sprite.png",
+    description: "Водная локация, много воды...",
+
+    icon: "./src/Map/icon/lake.png",
+    image: "./src/Map/image/lake.png",
   },
   eagle_peak: {
     name: "Орлиная вершина",
     position: { x: 800, y: 100 },
     type: "mountain",
-    discovered: false,
-    level: 2,
-    icon_sprite: "./assets/loc_sprite.png",
-    unlockRequirement: "pet_level > 3",
+    description: "Обилие высоких гор, это основа этого мира",
+
+    icon: "./src/Map/icon/eagle_peak.png",
+    image: "./src/Map/image/eagle_peak.png",
   },
   rubikon: {
     name: "<Рубикон>",
     position: { x: 1000, y: 500 },
     type: "tower",
-    discovered: true,
-    level: 3,
-    icon_sprite: "./assets/loc_sprite.png",
+    description: "Древняя башня посреди забытых земель",
+
+    icon: "./src/Map/icon/rubikon.png",
+    image: "./src/Map/image/rubikon.png",
   },
   desert_of_night: {
     name: "Пустыня ночи",
     position: { x: 1500, y: 900 },
     type: "sand",
-    discovered: false,
-    level: 4,
-    icon_sprite: "./assets/loc_sprite.png",
+    description: "До воды нужно ещё добраться...",
+
+    icon: "./src/Map/icon/desert_of_night.png",
+    image: "./src/Map/image/desert_of_night.png",
   },
   x_island: {
     name: "Остров X",
     position: { x: 1850, y: 750 },
     type: ["forest", "mountain"],
-    discovered: true,
-    level: 6,
-    icon_sprite: "./assets/loc_sprite.png",
+    description:
+      "Возраст: неизвестен; Размер: неизвестен; Уровень опасности: неопределёный.",
+
+    icon: "./src/Map/icon/x_island.png",
+    image: "./src/Map/image/x_island.png",
   },
 };

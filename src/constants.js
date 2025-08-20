@@ -28,6 +28,8 @@ export const tileCount = 4 * 4;
 export const mapWidthTile = 16;
 export const mapHeightTile = 16;
 
+export const sizeOfInventory = 6;
+
 // область перемещения (алгебра по модулю 8)
 // 5 6 7
 // 4   0
@@ -57,3 +59,28 @@ export const OBL = new Proxy(rawOBL, {
     return target[prop];
   },
 });
+
+//------TEXT----------
+export const bigText = {
+  fontSize: "34px",
+  fontFamily: "Arial",
+  color: "#ffffff",
+  stroke: "#000000",
+  strokeThickness: 4,
+};
+
+export const middleText = {
+  fontSize: "24px",
+  fontFamily: "Arial",
+  color: "#ffffff",
+  stroke: "#000000",
+  strokeThickness: 4,
+};
+
+export const smallText = {
+  fontSize: "20px",
+  fontFamily: "Arial",
+  color: "#ffffff",
+  stroke: "#000000",
+  strokeThickness: 4,
+};

@@ -1,21 +1,21 @@
 export const TA = {
-  GRASS: "grass", // степи
-  SAND: "sand", // пустыни
-  WATER: "water", // моря
-  MOUNTAINE: "mountaine", // горы
-  // леса
-  // болота
-  // тундры
-  // бэдленды
-  // снега
-  // льды
-  // лавы
-  // города
+  STEPPES: "STEPPES",
+  DESERTS: "DESERTS",
+  SEAS: "SEAS",
+  MOUNTAINS: "MOUNTAINS",
+  FORESTS: "FORESTS",
+  SWAMPS: "SWAMPS",
+  TUNDRA: "TUNDRA",
+  BADLANDS: "BADLANDS",
+  SNOW: "SNOW",
+  ICE: "ICE",
+  LAVA: "LAVA",
+  CITIES: "CITIES",
 };
 
 export const TileInfo = {
-  0: { types: [TA.GRASS] },
-  1: { types: [TA.SAND] },
-  2: { types: [TA.WATER] },
-  3: { types: [TA.MOUNTAINE] },
+  0: { types: [TA.STEPPES] },
+  1: { types: [TA.DESERTS] },
+  2: { types: [TA.SEAS] },
+  3: { types: [TA.MOUNTAINS] },
 };

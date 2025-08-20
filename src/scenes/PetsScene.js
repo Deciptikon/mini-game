@@ -48,19 +48,19 @@ export default class PetsScene extends Phaser.Scene {
           y,
           w,
           w,
-          `image_${key}`,
+          `icon_${key}`,
           "",
           () => {
             // onClick
             console.log("Клик по иконке!");
-            this.gameState.pet.type = key;
-            this.gameState.pet.stats = ListPets[key].stats;
-            this.gameState.pet.probs = ListPets[key].probs;
+            this.gameState.currentPet = key;
+            //this.gameState.pet.stats = ListPets[key].stats;
+            //this.gameState.pet.probs = ListPets[key].probs;
             this.scene.start("PetScene");
           },
           {
-            scale: 0.1,
-            hoverScale: 0.11,
+            scale: 0.25,
+            hoverScale: 0.28,
           }
         );
 

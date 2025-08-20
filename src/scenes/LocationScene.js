@@ -7,6 +7,7 @@ import {
   mapWidthTile,
   OBL,
   dK,
+  sizeOfInventory,
 } from "../constants.js";
 
 import { ListLoc } from "../Map/ListLoc.js";
@@ -21,7 +22,9 @@ import {
   getLocality,
 } from "../components/functions.js";
 import { TA, TileInfo } from "../Map/TileInfo.js";
-import { Pet } from "../Pets/Pet.js";
+import { Pet, fullUpdateStats } from "../Pets/Pet.js";
+import { ListPets } from "../Pets/ListPets.js";
+import { ListItems } from "../Items/ListItems.js";
 
 export default class LocationScene extends Phaser.Scene {
   constructor() {
@@ -37,7 +40,6 @@ export default class LocationScene extends Phaser.Scene {
   create() {
     this.gameState = this.game.registry.get("gameState");
     this.locationId = this.gameState.currentLocation;
-    this.timeOut = 3000 - 2500 * (this.gameState.pet.stats.speed / 10);
 
     /**
  * 
@@ -101,11 +103,17 @@ export default class LocationScene extends Phaser.Scene {
       .sprite(
         tileToWorld(5),
         tileToWorld(3),
-        `image_${this.gameState.pet.type}`
+        `image_${this.gameState.currentPet}`
       )
       .setScale(0.1)
       .setOrigin(0.5);
 
+    this.gameState.pet = fullUpdateStats(
+      this.gameState,
+      this.gameState.currentPet
+    );
+
+    console.log(this.gameState.pet);
     this.pet = new Pet(this.gameState.pet, pet_sprite, this.mapMatrix, 5, 3);
     this.petContainer.add(this.pet.sprite);
 
@@ -148,6 +156,7 @@ export default class LocationScene extends Phaser.Scene {
 
     this.input.on("pointerup", () => (isDragging = false));
 
+    this.timeOut = 3000 - 2500 * (this.gameState.pet.stats.speed / 10);
     /** */
     this.petUpdateTimer = this.time.addEvent({
       delay: this.timeOut,

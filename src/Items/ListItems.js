@@ -17,7 +17,12 @@ export const ListItems = {
     icon: "./src/Items/icon/walnut.png",
     callback: function (pet) {
       console.log(`callback 1`);
-      console.log(`callback 1 | ${pet.stats?.hp}`);
+      console.log(`callback 1 | ${pet.stats.hp}`);
+    },
+    modifyStats: function (pet) {
+      console.log(`modifyStats`);
+      pet.stats.hp = 8;
+      pet.stats.guard = 0;
     },
   },
   leadBullet: {

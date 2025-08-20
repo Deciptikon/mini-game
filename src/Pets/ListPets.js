@@ -11,24 +11,43 @@ export const SavePetsData = {
   countOfDeath: 0, // количество смертей
 };
 
+export const STATS = {
+  hp: { name: "Жизнь", icon: "❤️" },
+  guard: { name: "Защита", icon: "🛡️" },
+  invisible: { name: "Незаметность", icon: "👤" },
+  speed: { name: "Скорость", icon: "🌪️" },
+  caution: { name: "Осторожность", icon: "👀" },
+  dodge: { name: "Уклонение", icon: "🌀" },
+  morale: { name: "Мораль", icon: "⚖️" },
+};
+
 export const ListPets = {
   cat: {
     stats: {
-      hp: 4, // жизнь
-      guard: 4, // защита
-      invisible: 6, // незаметность
-      speed: 6, // скорость
-      caution: 6, // осторожность
-      dodge: 5, // уклонение
-      // добавить Мораль
+      hp: 4, //         жизнь
+      guard: 4, //      защита
+      invisible: 6, //  незаметность
+      speed: 6, //      скорость
+      caution: 6, //    осторожность
+      dodge: 5, //      уклонение
+      morale: 6, //     мораль
     },
     probs: {
-      [TA.WATER]: 0,
-      [TA.MOUNTAINE]: 1,
-      [TA.SAND]: 1,
-      [TA.GRASS]: 3,
+      [TA.STEPPES]: 100,
+      [TA.DESERTS]: 50,
+      [TA.SEAS]: 10,
+      [TA.MOUNTAINS]: 30,
+      [TA.FORESTS]: 100,
+      [TA.SWAMPS]: 10,
+      [TA.TUNDRA]: 20,
+      [TA.BADLANDS]: 5,
+      [TA.SNOW]: 20,
+      [TA.ICE]: 10,
+      [TA.LAVA]: 2,
+      [TA.CITIES]: 40,
     },
     image: "./assets/cat.png",
+    icon: "./src/Pets/icon/cat.png",
   },
   dog: {
     stats: {
@@ -38,14 +57,24 @@ export const ListPets = {
       speed: 6, // скорость
       caution: 3, // осторожность
       dodge: 3, // уклонение
+      morale: 6,
     },
     probs: {
-      [TA.WATER]: 0,
-      [TA.MOUNTAINE]: 2,
-      [TA.SAND]: 1,
-      [TA.GRASS]: 4,
+      [TA.STEPPES]: 100,
+      [TA.DESERTS]: 20,
+      [TA.SEAS]: 15,
+      [TA.MOUNTAINS]: 30,
+      [TA.FORESTS]: 100,
+      [TA.SWAMPS]: 10,
+      [TA.TUNDRA]: 20,
+      [TA.BADLANDS]: 5,
+      [TA.SNOW]: 40,
+      [TA.ICE]: 15,
+      [TA.LAVA]: 5,
+      [TA.CITIES]: 50,
     },
     image: "./assets/dog.png",
+    icon: "./src/Pets/icon/dog.png",
   },
   bird: {
     stats: {
@@ -55,14 +84,24 @@ export const ListPets = {
       speed: 8, // скорость
       caution: 8, // осторожность
       dodge: 5, // уклонение
+      morale: 6,
     },
     probs: {
-      [TA.WATER]: 1,
-      [TA.MOUNTAINE]: 3,
-      [TA.SAND]: 1,
-      [TA.GRASS]: 2,
+      [TA.STEPPES]: 50,
+      [TA.DESERTS]: 20,
+      [TA.SEAS]: 20,
+      [TA.MOUNTAINS]: 30,
+      [TA.FORESTS]: 100,
+      [TA.SWAMPS]: 20,
+      [TA.TUNDRA]: 20,
+      [TA.BADLANDS]: 20,
+      [TA.SNOW]: 20,
+      [TA.ICE]: 20,
+      [TA.LAVA]: 20,
+      [TA.CITIES]: 100,
     },
     image: "./assets/bird.png",
+    icon: "./src/Pets/icon/bird.png",
   },
   hedgehog: {
     stats: {
@@ -72,13 +111,23 @@ export const ListPets = {
       speed: 3, // скорость
       caution: 4, // осторожность
       dodge: 3, // уклонение
+      morale: 6,
     },
     probs: {
-      [TA.WATER]: 0,
-      [TA.MOUNTAINE]: 1,
-      [TA.SAND]: 0,
-      [TA.GRASS]: 2,
+      [TA.STEPPES]: 100,
+      [TA.DESERTS]: 20,
+      [TA.SEAS]: 10,
+      [TA.MOUNTAINS]: 20,
+      [TA.FORESTS]: 100,
+      [TA.SWAMPS]: 10,
+      [TA.TUNDRA]: 20,
+      [TA.BADLANDS]: 5,
+      [TA.SNOW]: 10,
+      [TA.ICE]: 10,
+      [TA.LAVA]: 2,
+      [TA.CITIES]: 40,
     },
     image: "./assets/hedgehog.png",
+    icon: "./src/Pets/icon/hedgehog.png",
   },
 };
