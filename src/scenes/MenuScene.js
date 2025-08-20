@@ -107,5 +107,21 @@ export default class MenuScene extends Phaser.Scene {
         height: hb,
       }
     );
+
+    y += hb + s;
+    const settingsButton = new Button(
+      this,
+      x,
+      y,
+      "Настройки",
+      () => {
+        this.scene.start("SettingsScene");
+      },
+      {
+        color: 0x4caf50,
+        width: wb,
+        height: hb,
+      }
+    );
   }
 }

@@ -17,5 +17,5 @@ export const TileInfo = {
   0: { types: [TA.STEPPES] },
   1: { types: [TA.DESERTS] },
   2: { types: [TA.SEAS] },
-  3: { types: [TA.MOUNTAINS] },
+  3: { types: [TA.FORESTS] },
 };

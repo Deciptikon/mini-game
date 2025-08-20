@@ -75,6 +75,21 @@ export default class PetScene extends Phaser.Scene {
 
       y += h + s;
     }
+
+    new Button(
+      this,
+      W2,
+      H - 100,
+      "Инвентарь",
+      () => {
+        this.scene.start("InventoryScene");
+      },
+      {
+        color: 0x4caf50,
+        width: wb,
+        height: hb,
+      }
+    );
   }
 
   decayStats() {

@@ -1,6 +1,8 @@
 console.log("start");
 import { W, H } from "./constants.js";
 
+import GameState from "./GameState.js";
+
 import SplashScene from "./scenes/SplashScene.js";
 import MenuScene from "./scenes/MenuScene.js";
 import PetScene from "./scenes/PetScene.js";
@@ -10,8 +12,8 @@ import AchievementsScene from "./scenes/AchievementsScene.js";
 import HouseScene from "./scenes/HouseScene.js";
 import LocationInfoScene from "./scenes/LocationInfoScene.js";
 import LocationScene from "./scenes/LocationScene.js";
-
-import GameState from "./GameState.js";
+import SettingsScene from "./scenes/SettingsScene.js";
+import InventoryScene from "./scenes/InventoryScene.js";
 
 export const gameState = new GameState();
 gameState.load();
@@ -37,6 +39,8 @@ const config = {
     HouseScene,
     LocationInfoScene,
     LocationScene,
+    SettingsScene,
+    InventoryScene,
   ],
   backgroundColor: "#9bd6ff",
   scale: {

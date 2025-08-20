@@ -3,7 +3,6 @@ export default class Button extends Phaser.GameObjects.Container {
     super(scene, x, y);
     this.scene = scene;
 
-    // Параметры по умолчанию
     const {
       width = 150,
       height = 50,
@@ -12,36 +11,30 @@ export default class Button extends Phaser.GameObjects.Container {
       borderRadius = 10,
     } = options;
 
-    // Создаем графику для фона
+    this.buttonOptions = { width, height, color, borderRadius };
+
     this.background = scene.add
       .graphics()
       .fillStyle(color, 1)
       .fillRoundedRect(-width / 2, -height / 2, width, height, borderRadius);
 
-    // Добавляем текст
     this.buttonText = scene.add.text(0, 0, text, textStyle).setOrigin(0.5);
 
-    // Добавляем элементы в контейнер
     this.add([this.background, this.buttonText]);
 
-    // Делаем интерактивным
     this.setSize(width, height);
     this.setInteractive({ useHandCursor: true })
       .on("pointerover", this.onHover.bind(this, color))
       .on("pointerout", this.onOut.bind(this, color))
       .on("pointerdown", callback);
 
-    // Сохраняем параметры для перерисовки
-    this.buttonOptions = { width, height, color, borderRadius };
-
-    // Добавляем в сцену
     scene.add.existing(this);
   }
 
-  onHover(baseColor) {
+  drawBackground(color) {
     this.background
       .clear()
-      .fillStyle(baseColor - 0x333333, 1)
+      .fillStyle(color, 1)
       .fillRoundedRect(
         -this.buttonOptions.width / 2,
         -this.buttonOptions.height / 2,
@@ -51,17 +44,18 @@ export default class Button extends Phaser.GameObjects.Container {
       );
   }
 
-  onOut(baseColor) {
-    this.background
-      .clear()
-      .fillStyle(baseColor, 1)
-      .fillRoundedRect(
-        -this.buttonOptions.width / 2,
-        -this.buttonOptions.height / 2,
-        this.buttonOptions.width,
-        this.buttonOptions.height,
-        this.buttonOptions.borderRadius
-      );
+  onHover() {
+    this.drawBackground(this.buttonOptions.color - 0x333333);
+  }
+
+  onOut() {
+    this.drawBackground(this.buttonOptions.color);
+  }
+
+  setColor(newColor) {
+    this.buttonOptions.color = newColor;
+    this.drawBackground(newColor);
+    return this;
   }
 
   // Дополнительные методы для управления
