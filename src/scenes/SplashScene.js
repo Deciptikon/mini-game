@@ -75,12 +75,11 @@ export default class SplashScene extends Phaser.Scene {
     bg.fillRect((W - w) / 2, y, w, h);
 
     this.progressBar = this.add.graphics();
-    console.log(`Progressbar is created`);
   }
 
   // Обновление прогресс-бара
   updateProgressBar(value) {
-    console.log(`Loading ${Math.ceil(value * 100)}%`);
+    //console.log(`Loading ${Math.ceil(value * 100)}%`);
     this.progressBar.clear();
     this.progressBar.fillStyle(0xfb8137, 1);
     this.progressBar.fillRect((W - w) / 2, y, w * value, h);

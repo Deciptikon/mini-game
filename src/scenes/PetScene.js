@@ -2,7 +2,7 @@ import { W, H, W2, H2, H8, wb, hb } from "../constants.js";
 import Button from "../components/Button.js";
 import StatusBar from "../components/StatusBar.js";
 import { createButtonBack } from "../components/functions.js";
-import { STATS } from "../Pets/ListPets.js";
+import { ListPets, STATS } from "../Pets/ListPets.js";
 import { fullUpdateStats } from "../Pets/Pet.js";
 
 export default class PetScene extends Phaser.Scene {
@@ -13,12 +13,14 @@ export default class PetScene extends Phaser.Scene {
 
   create() {
     this.gameState = this.game.registry.get("gameState");
+
     //this.stats = this.gameState.pet.stats;
 
     this.gameState.pet = fullUpdateStats(
       this.gameState,
       this.gameState.currentPet
     );
+    console.log(this.gameState.pet);
 
     this.image_pet = this.add
       .sprite(W2, H * 0.3, `image_${this.gameState.currentPet}`)

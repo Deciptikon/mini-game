@@ -114,12 +114,10 @@ export function fullUpdateStats(gameState, petId) {
   const pet = {};
 
   pet.id = petId;
-  pet.stats = ListPets[petId].stats;
-  pet.probs = ListPets[petId].probs;
-  pet.level = gameState.data.pets[petId].level;
-  pet.experiens = gameState.data.pets[petId].experiens;
-  //pet.init = ListPets[petId].init;
-  //pet.step = ListPets[petId].step;
+  pet.stats = { ...ListPets[petId].stats };
+  pet.probs = { ...ListPets[petId].probs };
+  pet.level = { ...gameState.data.pets[petId].level };
+  pet.experiens = { ...gameState.data.pets[petId].experiens };
 
   pet.items = new Array(sizeOfInventory).fill(null);
   for (const key in ListItems) {
@@ -137,5 +135,6 @@ export function fullUpdateStats(gameState, petId) {
       console.log(slot.item?.modifyStats(pet));
     }
   }
+
   return pet;
 }
