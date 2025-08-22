@@ -3,6 +3,7 @@ import { W, H, W2, H2, isMobile } from "../constants.js";
 import { ListPets } from "../Pets/ListPets.js";
 import { ListLoc } from "../Map/ListLoc.js";
 import { ListItems } from "../Items/ListItems.js";
+import { ListAchievements } from "../Achievements/ListAchievements.js";
 
 const w = W * 0.75; // относительная длина полосы загрузки
 const h = 10; // высота полосы
@@ -35,6 +36,7 @@ export default class SplashScene extends Phaser.Scene {
 
     this.loadFromKollection(ListPets, ["image", "icon"]);
     this.loadFromKollection(ListItems, ["image", "icon"]);
+    this.loadFromKollection(ListAchievements, ["image", "icon"]);
 
     this.load.image("map_texture", "./src/Map/map_texture.png");
     /**for (const id in ListLoc) {
@@ -63,17 +65,7 @@ export default class SplashScene extends Phaser.Scene {
   }
 
   create() {
-    if (isMobile) {
-      this.splash = this.add
-        .sprite(W2, H2, "splash")
-        .setScale(1)
-        .setOrigin(0.5);
-    } else {
-      this.splash = this.add
-        .sprite(W2, H * 0.5, "splash")
-        .setScale(1)
-        .setOrigin(0.5);
-    }
+    this.splash = this.add.sprite(W2, H2, "splash").setScale(1).setOrigin(0.5);
   }
 
   // Создание элементов прогресс-бара

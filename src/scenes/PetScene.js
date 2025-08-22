@@ -15,7 +15,10 @@ export default class PetScene extends Phaser.Scene {
     this.gameState = this.game.registry.get("gameState");
     //this.stats = this.gameState.pet.stats;
 
-    this.pet = fullUpdateStats(this.gameState, this.gameState.currentPet);
+    this.gameState.pet = fullUpdateStats(
+      this.gameState,
+      this.gameState.currentPet
+    );
 
     this.image_pet = this.add
       .sprite(W2, H * 0.3, `image_${this.gameState.currentPet}`)
@@ -63,7 +66,7 @@ export default class PetScene extends Phaser.Scene {
         y,
         STATS[key].icon,
         10,
-        this.pet.stats[key],
+        this.gameState.pet.stats[key],
         color,
         {
           width: barWidth,
@@ -97,15 +100,6 @@ export default class PetScene extends Phaser.Scene {
 
     if (this.stats.food < 3) this.showEmoji("🍽️", W2, H * 0.15);
     if (this.stats.energy < 3) this.showEmoji("💤", W2, H * 0.2);
-  }
-
-  petJump() {
-    this.tweens.add({
-      targets: this.pet,
-      y: this.pet.y - 50,
-      duration: 200,
-      yoyo: true,
-    });
   }
 
   showEmoji(emoji, x, y) {

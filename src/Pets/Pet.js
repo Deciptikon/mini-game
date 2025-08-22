@@ -14,6 +14,8 @@ export class Pet {
     this.mapHeight = map.length;
     this.x = x;
     this.y = y;
+
+    this.emojiStatus = null;
   }
 
   update() {
@@ -29,8 +31,8 @@ export class Pet {
     this.sprite.y += dy * dK;
   }
 
-  create() {
-    //
+  init() {
+    ListPets[this.pet.id].init(this.pet);
   }
 
   probFromLocality() {
@@ -60,6 +62,31 @@ export class Pet {
   }
 
   doStep() {
+    if (this.pet.stats.hp <= 0 || this.pet.stats.morale <= 0) {
+      return;
+    }
+
+    const tile = TileInfo[this.map[this.y][this.x]].types[0];
+    const current = {
+      tile: tile,
+      time: "day",
+      weather: "warm",
+    };
+
+    ListPets[this.pet.id].step(this.pet, current);
+    if (this.pet.stats.hp <= 0 || this.pet.stats.morale <= 0) {
+      return;
+    }
+
+    for (const slot of this.pet.items) {
+      if (slot !== null) {
+        slot.item?.updateStats(this.pet, current);
+      }
+    }
+    if (this.pet.stats.hp <= 0 || this.pet.stats.morale <= 0) {
+      return;
+    }
+
     this.prob = new Array(8).fill(0);
 
     this.probFromLocality();
@@ -85,10 +112,14 @@ export class Pet {
 
 export function fullUpdateStats(gameState, petId) {
   const pet = {};
+
+  pet.id = petId;
   pet.stats = ListPets[petId].stats;
   pet.probs = ListPets[petId].probs;
   pet.level = gameState.data.pets[petId].level;
   pet.experiens = gameState.data.pets[petId].experiens;
+  //pet.init = ListPets[petId].init;
+  //pet.step = ListPets[petId].step;
 
   pet.items = new Array(sizeOfInventory).fill(null);
   for (const key in ListItems) {
@@ -103,7 +134,7 @@ export function fullUpdateStats(gameState, petId) {
   }
   for (const slot of pet.items) {
     if (slot !== null) {
-      slot.item?.modifyStats(pet);
+      console.log(slot.item?.modifyStats(pet));
     }
   }
   return pet;

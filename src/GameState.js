@@ -1,3 +1,8 @@
+import {
+  ListAchievements,
+  SaveAchieData,
+  saveAchiePrefix,
+} from "./Achievements/ListAchievements.js";
 import { GAME_NAME } from "./constants.js";
 import {
   ListItems,
@@ -47,59 +52,18 @@ export default class GameState {
       },
 
       // статистика по всем питомцам
-      pets: {
-        cat: {
-          level: 1, //        уровень
-          experience: 0, //   опыт
-          unlocked: true, //  питомец разблокирован
-
-          countOfloc: 0, //   количество пройденных локаций
-          timeInLoc: 0, //    количество секунд в игре
-          countOfDeath: 0, // количество смертей
-          //
-        },
-        dog: {
-          //
-        },
-        //
-      },
+      pets: {},
 
       // Статистика по всем предметам
-      items: {
-        eyeOfStorm: {
-          unlocked: true,
-          place: "none", // 'PET.CAT'  ||  'PET.DOG'  || ....
-          slot: 2, // слот в инвентаре питомца
-
-          countOfLoc: 0, // количество завершенных миссий с этим предметом
-        },
-        walnut: {},
-        //
-      },
+      items: {},
 
       // статистика по локациям
-      locations: {
-        forest: {
-          unlocken: true,
-          discoveredLevel: 0, // всего 7 уровней (0-6)
-
-          countOfGame: 0, // количество игр на локации
-        },
-        lake: {},
-        //
-      },
+      locations: {},
 
       // игровые достижения (качественные и количественные)
-      achievements: {
-        handOfGods: { unlocked: false, count: 0 },
-        strongestWarrior: {},
-        //....
-      },
+      achievements: {},
 
-      settings: {
-        sound: true,
-        music: true,
-      },
+      settings: {},
     };
   }
 
@@ -112,51 +76,130 @@ export default class GameState {
   }
 
   loadFromLocalStorage() {
-    //здесь настройки
-    //this.loadFrom(this.data.settings, ListSetings, SaveSetingsData, saveSetingsPrefix);
-    this.loadElement(this.data.settings, SaveSetingsData, saveSetingsPrefix);
-
-    this.loadFrom(this.data.pets, ListPets, SavePetsData, savePetsPrefix);
-    this.loadFrom(this.data.items, ListItems, SaveItemsData, saveItemsPrefix);
-    this.loadFrom(this.data.locations, ListLoc, SaveLocsData, saveLocsPrefix);
-
-    //ещё ачивки
+    this.loadSettings();
+    this.loadPets();
+    this.loadItems();
+    this.loadLocations();
+    this.loadAchievements();
   }
 
   saveToLocalStorage() {
-    this.saveTo(this.data.pets, ListPets, savePetsPrefix);
-    this.saveTo(this.data.items, ListItems, saveItemsPrefix);
-    this.saveTo(this.data.locations, ListLoc, saveLocsPrefix);
+    this.saveSettings();
+    this.savePets();
+    this.saveItems();
+    this.saveLocations();
+    this.saveAchievements();
   }
 
-  loadElement(position, shablon, prefix, type = "") {
+  loadElement(shablon, prefix, type = "") {
+    let position = {};
+
     const element = localStorage.getItem(`${GAME_NAME}_${prefix}_${type}`);
     if (element !== null && element !== undefined && element !== "undefined") {
-      position[type] = JSON.parse(element);
-    } else {
-      position[type] = {};
+      position = JSON.parse(element);
     }
 
     for (const key in shablon) {
-      if (position[type]?.[key] === undefined) {
-        position[type][key] = shablon[key];
+      if (position?.[key] === undefined) {
+        position[key] = shablon[key];
       }
     }
+
+    return position;
   }
 
-  loadFrom(position, config, shablon, prefix) {
-    for (const type in config) {
-      this.loadElement(position, shablon, prefix, type);
-    }
-  }
+  saveElement(position, prefix, type = "") {
+    console.log(`${GAME_NAME}_${prefix}_${type}`);
 
-  saveTo(position, config, prefix) {
-    for (const type in config) {
+    if (type !== "") {
       localStorage.setItem(
         `${GAME_NAME}_${prefix}_${type}`,
         JSON.stringify(position[type])
       );
+    } else {
+      localStorage.setItem(
+        `${GAME_NAME}_${prefix}_${type}`,
+        JSON.stringify(position)
+      );
     }
+  }
+
+  loadFrom(config, shablon, prefix) {
+    const position = {};
+    for (const type in config) {
+      position[type] = this.loadElement(shablon, prefix, type);
+    }
+    return position;
+  }
+
+  saveTo(position, config, prefix) {
+    for (const type in config) {
+      this.saveElement(position, prefix, type);
+    }
+  }
+
+  loadSettings() {
+    this.data.settings = this.loadElement(SaveSetingsData, saveSetingsPrefix);
+  }
+
+  saveSettings() {
+    this.saveElement(this.data.settings, saveSetingsPrefix);
+  }
+
+  loadPets() {
+    this.data.pets = this.loadFrom(ListPets, SavePetsData, savePetsPrefix);
+  }
+
+  loadPet(key) {
+    return this.loadElement(SaveSetingsData, saveSetingsPrefix, key);
+  }
+
+  savePet(key) {
+    this.saveElement(this.data.pets, savePetsPrefix, key);
+  }
+
+  savePets() {
+    this.saveTo(this.data.pets, ListPets, savePetsPrefix);
+  }
+
+  loadItems() {
+    this.data.items = this.loadFrom(ListItems, SaveItemsData, saveItemsPrefix);
+  }
+
+  saveItem(key) {
+    this.saveElement(this.data.items, saveItemsPrefix, key);
+  }
+
+  saveItems() {
+    this.saveTo(this.data.items, ListItems, saveItemsPrefix);
+  }
+
+  loadLocations() {
+    this.data.locations = this.loadFrom(ListLoc, SaveLocsData, saveLocsPrefix);
+  }
+
+  saveLoc(key) {
+    this.saveElement(this.data.locations, saveLocsPrefix, key);
+  }
+
+  saveLocations() {
+    this.saveTo(this.data.locations, ListLoc, saveLocsPrefix);
+  }
+
+  loadAchievements() {
+    this.data.achievements = this.loadFrom(
+      ListAchievements,
+      SaveAchieData,
+      saveAchiePrefix
+    );
+  }
+
+  saveAchie(key) {
+    this.saveElement(this.data.achievements, saveAchiePrefix, key);
+  }
+
+  saveAchievements() {
+    this.saveTo(this.data.achievements, ListAchievements, saveAchiePrefix);
   }
 
   allSaveToLocalStorage() {

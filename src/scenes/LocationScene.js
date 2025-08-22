@@ -31,11 +31,10 @@ export default class LocationScene extends Phaser.Scene {
     super({ key: "LocationScene" });
     this.locationId = null;
     this.timeOut = 1000;
+    this.pet = null;
   }
 
-  init(data) {
-    //
-  }
+  init(data) {}
 
   create() {
     this.gameState = this.game.registry.get("gameState");
@@ -115,6 +114,7 @@ export default class LocationScene extends Phaser.Scene {
 
     console.log(this.gameState.pet);
     this.pet = new Pet(this.gameState.pet, pet_sprite, this.mapMatrix, 5, 3);
+    this.pet.init();
     this.petContainer.add(this.pet.sprite);
 
     // Настройка камеры
@@ -175,6 +175,10 @@ export default class LocationScene extends Phaser.Scene {
 
   petStep() {
     this.pet.doStep();
+
+    if (this.pet.pet.stats.hp <= 0 || this.pet.pet.stats.morale <= 0) {
+      console.log("=========ИГРА ОКОНЧЕНА!!!===========");
+    }
   }
 
   predatorStep() {
@@ -236,5 +240,32 @@ export default class LocationScene extends Phaser.Scene {
 
     this.pet.sprite.y += dy * dK;*/
     this.pet.update();
+    //console.log(this.pet.pet.emojiStatus);
+
+    if (this.pet.pet.emojiStatus !== null) {
+      this.showEmoji(
+        this.pet.pet.emojiStatus,
+        this.pet.sprite.x,
+        this.pet.sprite.y - 50
+      );
+      this.pet.pet.emojiStatus = null;
+    }
+  }
+
+  showEmoji(emoji, x, y) {
+    const effect = this.add
+      .text(x, y, emoji, {
+        fontSize: "48px",
+        alpha: 0,
+      })
+      .setOrigin(0.5);
+
+    this.tweens.add({
+      targets: effect,
+      y: y - 100,
+      alpha: 1,
+      duration: 800,
+      onComplete: () => effect.destroy(),
+    });
   }
 }

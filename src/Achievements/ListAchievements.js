@@ -8,7 +8,7 @@ export const ListAchievements = {
   handOfGods: {
     name: "Рука Богов",
     description: "Вы достигли истинного совершенства.",
-    image: "./src/Achievements/handOfGods.png",
+    icon: "./src/Achievements/handOfGods.png",
     condition: "",
     reward: "",
 
@@ -20,7 +20,7 @@ export const ListAchievements = {
   strongestWarrior: {
     name: "Сильнейший воин",
     description: "Опасности закаляют вас",
-    image: "./src/Achievements/strongestWarrior.png",
+    icon: "./src/Achievements/strongestWarrior.png",
     condition: "",
     reward: "",
 

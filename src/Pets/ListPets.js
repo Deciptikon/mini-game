@@ -48,6 +48,26 @@ export const ListPets = {
     },
     image: "./assets/cat.png",
     icon: "./src/Pets/icon/cat.png",
+
+    init: function (pet) {
+      pet.selfCounter = 0;
+      pet.lastTile = null;
+    },
+    step: function (pet, current = null) {
+      pet.selfCounter++;
+      if ([TA.SEAS, TA.LAVA].includes(current.tile)) {
+        if ([TA.SEAS, TA.LAVA].includes(pet.lastTile)) {
+          pet.stats.hp = 0;
+          console.log(`hp = ${pet.stats.hp}`);
+          return;
+        }
+        pet.stats.hp--;
+        pet.emojiStatus = "-1❤️";
+      }
+      pet.lastTile = current.tile;
+      console.log(`hp = ${pet.stats.hp}`);
+      if (pet.emojiStatus !== null) console.log(`emoji = ${pet.emojiStatus}`);
+    },
   },
   dog: {
     stats: {
@@ -75,6 +95,9 @@ export const ListPets = {
     },
     image: "./assets/dog.png",
     icon: "./src/Pets/icon/dog.png",
+    step: function (pet, current = null) {
+      //можно добавить счетчики и условия
+    },
   },
   bird: {
     stats: {
@@ -102,6 +125,9 @@ export const ListPets = {
     },
     image: "./assets/bird.png",
     icon: "./src/Pets/icon/bird.png",
+    step: function (pet, current = null) {
+      //можно добавить счетчики и условия
+    },
   },
   hedgehog: {
     stats: {
@@ -129,5 +155,8 @@ export const ListPets = {
     },
     image: "./assets/hedgehog.png",
     icon: "./src/Pets/icon/hedgehog.png",
+    step: function (pet, current = null) {
+      //можно добавить счетчики и условия
+    },
   },
 };

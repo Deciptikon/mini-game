@@ -10,6 +10,7 @@ export default class SettingsScene extends Phaser.Scene {
 
   create() {
     this.gameState = this.game.registry.get("gameState");
+    this.gameState.loadSettings();
 
     const colorA = 0x4caf50;
     const colorB = 0xaf4c50;
@@ -38,6 +39,8 @@ export default class SettingsScene extends Phaser.Scene {
             ? "Выключить звуки"
             : "Включить звуки"
         );
+
+        this.gameState.saveSettings();
       },
       {
         color: this.gameState.data.settings.sound ? colorB : colorA,
@@ -65,6 +68,8 @@ export default class SettingsScene extends Phaser.Scene {
             ? "Выключить музыку"
             : "Включить музыку"
         );
+
+        this.gameState.saveSettings();
       },
       {
         color: this.gameState.data.settings.music ? colorB : colorA,

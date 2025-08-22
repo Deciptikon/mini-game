@@ -17,11 +17,20 @@ import InventoryScene from "./scenes/InventoryScene.js";
 
 export const gameState = new GameState();
 gameState.load();
+console.log(gameState.data);
 gameState.data.pets.cat.unlocked = true;
 gameState.data.locations.forest.unlocked = true;
 
-gameState.data.items.walnut.unlocked = true;
-gameState.data.items.walnut.place = "cat";
+//gameState.data.items.walnut.unlocked = false;
+//gameState.data.items.walnut.place = "cat";
+//gameState.data.items.walnut.slot = 1;
+//gameState.data.items.wingOfFly.unlocked = false;
+//gameState.data.items.wingOfFly.place = "cat";
+//gameState.data.items.wingOfFly.slot = 0;
+
+gameState.data.items.chamomile.unlocked = true;
+gameState.data.items.chamomile.place = "cat";
+gameState.data.items.chamomile.slot = 0;
 
 console.log(gameState.data);
 
