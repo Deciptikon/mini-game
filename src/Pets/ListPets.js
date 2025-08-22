@@ -66,7 +66,6 @@ export const ListPets = {
       }
       pet.lastTile = current.tile;
       console.log(`hp = ${pet.stats.hp}`);
-      if (pet.emojiStatus !== null) console.log(`emoji = ${pet.emojiStatus}`);
     },
   },
   dog: {

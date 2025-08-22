@@ -240,9 +240,9 @@ export default class LocationScene extends Phaser.Scene {
 
     this.pet.sprite.y += dy * dK;*/
     this.pet.update();
-    //console.log(this.pet.pet.emojiStatus);
 
     if (this.pet.pet.emojiStatus !== null) {
+      console.log(this.pet.pet.emojiStatus);
       this.showEmoji(
         this.pet.pet.emojiStatus,
         this.pet.sprite.x,
