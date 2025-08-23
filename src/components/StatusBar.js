@@ -22,6 +22,7 @@ export default class StatusBar extends Phaser.GameObjects.Container {
       baseColor = 0x555555,
       iconSize = "35px",
       label = "",
+      number = true,
     } = options;
 
     // Сохраняем параметры для обновления
@@ -29,20 +30,21 @@ export default class StatusBar extends Phaser.GameObjects.Container {
     this.maxValue = maxValue;
     this.currentValue = currentValue;
 
+    const iconx = -10;
     // подложка для иконки
     this.circle = scene.add
-      .circle(0, height * 0.5, 20, fillColor)
+      .circle(iconx, height / 2, 20, fillColor)
       .setStrokeStyle(3, 0x222222);
 
     // Создаем иконку
     this.icon = scene.add
       .text(0, 0, icon, { fontSize: iconSize })
       .setOrigin(0.5)
-      .setPosition(0, height / 2);
+      .setPosition(iconx, height / 2);
 
     // Создаем текстовую метку (если есть)
     this.label = null;
-    this.number = null;
+
     if (label) {
       this.label = scene.add
         .text(width / 2, height / 2, label, {
@@ -50,6 +52,9 @@ export default class StatusBar extends Phaser.GameObjects.Container {
           color: "#ffffffff",
         })
         .setOrigin(0.5);
+    }
+    this.number = null;
+    if (number) {
       this.number = scene.add
         .text(width + 5, height / 2, this.currentValue, {
           fontSize: Math.max(12, height),
@@ -63,6 +68,10 @@ export default class StatusBar extends Phaser.GameObjects.Container {
       .graphics()
       .fillStyle(baseColor, 1)
       .fillRoundedRect(0, 0, width, height, borderRadius);
+
+    this.baseBar
+      .lineStyle(3, 0x000000, 1)
+      .strokeRoundedRect(0, 0, width, height, borderRadius);
 
     // Создаем заполняемую часть
     this.fillBar = scene.add
@@ -80,6 +89,8 @@ export default class StatusBar extends Phaser.GameObjects.Container {
     const children = [this.baseBar, this.fillBar, this.circle, this.icon];
     if (this.label) {
       children.push(this.label);
+    }
+    if (this.number) {
       children.push(this.number);
     }
     this.add(children);
@@ -101,6 +112,9 @@ export default class StatusBar extends Phaser.GameObjects.Container {
         this.barConfig.height,
         0
       );
+    if (this.number) {
+      this.number.setText(this.currentValue);
+    }
 
     return this.currentValue;
   }

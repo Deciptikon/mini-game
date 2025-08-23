@@ -81,6 +81,9 @@ export default class GameState {
     this.loadItems();
     this.loadLocations();
     this.loadAchievements();
+
+    this.loadAllLevel();
+    this.loadAllExperience();
   }
 
   saveToLocalStorage() {
@@ -89,6 +92,9 @@ export default class GameState {
     this.saveItems();
     this.saveLocations();
     this.saveAchievements();
+
+    this.saveAllLevel();
+    this.saveAllExperience();
   }
 
   loadElement(shablon, prefix, type = "") {
@@ -200,6 +206,61 @@ export default class GameState {
 
   saveAchievements() {
     this.saveTo(this.data.achievements, ListAchievements, saveAchiePrefix);
+  }
+
+  loadLevel(type) {
+    const data = localStorage.getItem(`${GAME_NAME}_${"level"}_${type}`);
+    console.log(`${type} lvl = ${data}`);
+    if (data === null) {
+      return 0;
+    }
+    return Number(data);
+  }
+
+  loadAllLevel() {
+    for (const type in ListPets) {
+      this.data.pets[type].level = this.loadLevel(type);
+    }
+  }
+
+  saveLevel(type) {
+    localStorage.setItem(
+      `${GAME_NAME}_${"level"}_${type}`,
+      this.data.pets[type].level
+    );
+  }
+
+  saveAllLevel() {
+    for (const type in ListPets) {
+      this.saveLevel(type);
+    }
+  }
+
+  loadExperience(type) {
+    const data = localStorage.getItem(`${GAME_NAME}_${"experience"}_${type}`);
+    if (data === null) {
+      return 0;
+    }
+    return Number(data);
+  }
+
+  loadAllExperience() {
+    for (const type in ListPets) {
+      this.data.pets[type].experience = this.loadExperience(type);
+    }
+  }
+
+  saveExperience(type) {
+    localStorage.setItem(
+      `${GAME_NAME}_${"experience"}_${type}`,
+      this.data.pets[type].experience
+    );
+  }
+
+  saveAllExperience() {
+    for (const type in ListPets) {
+      this.saveExperience(type);
+    }
   }
 
   allSaveToLocalStorage() {

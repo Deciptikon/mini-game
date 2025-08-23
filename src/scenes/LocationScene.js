@@ -8,6 +8,8 @@ import {
   OBL,
   dK,
   sizeOfInventory,
+  H,
+  W,
 } from "../constants.js";
 
 import { ListLoc } from "../Map/ListLoc.js";
@@ -23,8 +25,9 @@ import {
 } from "../components/functions.js";
 import { TA, TileInfo } from "../Map/TileInfo.js";
 import { Pet, fullUpdateStats } from "../Pets/Pet.js";
-import { ListPets } from "../Pets/ListPets.js";
+import { ListPets, STATS } from "../Pets/ListPets.js";
 import { ListItems } from "../Items/ListItems.js";
+import StatusBar from "../components/StatusBar.js";
 
 export default class LocationScene extends Phaser.Scene {
   constructor() {
@@ -138,6 +141,61 @@ export default class LocationScene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(1000);
 
+    this.statusBarExp = new StatusBar(
+      this,
+      150,
+      40,
+      STATS.hp.icon,
+      (this.pet.pet.level + 1) * 100,
+      this.pet.pet.experience,
+      0xaaaa00,
+      {
+        width: W - 200,
+        height: 20,
+        number: false,
+        label: `${this.pet.pet.experience}`,
+      }
+    );
+    this.statusBarExp.setScrollFactor(0).setDepth(1000);
+
+    const sby = H - 50;
+    const keyHP = "hp";
+    const keyMorale = "morale";
+
+    this.statusBarHP = new StatusBar(
+      this,
+      50,
+      sby,
+      STATS[keyHP].icon,
+      10,
+      this.pet.pet.stats.hp,
+      0xaaaa00,
+      {
+        width: W * 0.3,
+        height: 20,
+        number: false,
+        label: `${this.pet.pet.stats.hp}`,
+      }
+    );
+    this.statusBarHP.setScrollFactor(0).setDepth(1000);
+
+    this.statusBarMorale = new StatusBar(
+      this,
+      W - W * 0.3 - 50,
+      sby,
+      STATS[keyMorale].icon,
+      10,
+      this.pet.pet.stats.morale,
+      0x2222bb,
+      {
+        width: W * 0.3,
+        height: 20,
+        number: false,
+        label: `${this.pet.pet.stats.morale}`,
+      }
+    );
+    this.statusBarMorale.setScrollFactor(0).setDepth(1000);
+
     // Drag-to-Pan скроллинг
     let isDragging = false;
     let startX, startY;
@@ -175,6 +233,13 @@ export default class LocationScene extends Phaser.Scene {
 
   petStep() {
     this.pet.doStep();
+
+    this.statusBarExp.updateValue(this.pet.pet.experience);
+    this.statusBarExp.updateLabel(`${this.pet.pet.experience}`);
+    this.statusBarHP.updateValue(this.pet.pet.stats.hp);
+    this.statusBarHP.updateLabel(`${this.pet.pet.stats.hp}`);
+    this.statusBarMorale.updateValue(this.pet.pet.stats.morale);
+    this.statusBarMorale.updateLabel(`${this.pet.pet.stats.morale}`);
 
     if (this.pet.pet.stats.hp <= 0 || this.pet.pet.stats.morale <= 0) {
       console.log("=========ИГРА ОКОНЧЕНА!!!===========");

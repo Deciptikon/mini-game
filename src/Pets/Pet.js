@@ -116,8 +116,10 @@ export function fullUpdateStats(gameState, petId) {
   pet.id = petId;
   pet.stats = { ...ListPets[petId].stats };
   pet.probs = { ...ListPets[petId].probs };
-  pet.level = { ...gameState.data.pets[petId].level };
-  pet.experiens = { ...gameState.data.pets[petId].experiens };
+  pet.level = gameState.data.pets[petId].level;
+  pet.experience = gameState.data.pets[petId].experience;
+
+  console.log(`${pet.experiens} = ${gameState.data.pets[petId].experiens}`);
 
   pet.items = new Array(sizeOfInventory).fill(null);
   for (const key in ListItems) {
