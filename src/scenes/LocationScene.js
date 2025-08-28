@@ -29,6 +29,7 @@ import { Pet, fullUpdateStats } from "../Pets/Pet.js";
 import { ListPets, STATS } from "../Pets/ListPets.js";
 import { ListItems } from "../Items/ListItems.js";
 import StatusBar from "../components/StatusBar.js";
+import ProbsGreed from "../components/ProbsGreed.js";
 
 export default class LocationScene extends Phaser.Scene {
   constructor() {
@@ -121,6 +122,9 @@ export default class LocationScene extends Phaser.Scene {
     this.pet.init();
     this.petContainer.add(this.pet.sprite);
 
+    this.probsGreed = new ProbsGreed(this, this.pet);
+    this.probsGreed.doStep();
+
     // Настройка камеры
     const cx = (map.widthInPixels - this.sys.game.config.width) / 2;
     const cy = (map.heightInPixels - this.sys.game.config.height) / 2;
@@ -128,8 +132,15 @@ export default class LocationScene extends Phaser.Scene {
     const mh = map.heightInPixels;
     const gw = this.sys.game.config.width;
     const gh = this.sys.game.config.height;
+    const px = W / 2;
+    const py = H / 2;
 
-    this.cameras.main.setBounds(mw > gw ? 0 : cx, mh > gh ? 0 : cy, mw, mh);
+    this.cameras.main.setBounds(
+      mw > gw ? -px : cx - px,
+      mh > gh ? -py : cy - py,
+      mw + 2 * px,
+      mh + 2 * py
+    );
 
     this.cameras.main.roundPixels = true;
 
@@ -234,6 +245,7 @@ export default class LocationScene extends Phaser.Scene {
 
   petStep() {
     this.pet.doStep();
+    this.probsGreed.doStep();
 
     this.statusBarExp.updateValue(this.pet.pet.experience);
     this.statusBarExp.updateLabel(

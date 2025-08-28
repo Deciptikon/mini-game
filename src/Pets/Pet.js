@@ -14,8 +14,14 @@ export class Pet {
     this.mapHeight = map.length;
     this.x = x;
     this.y = y;
+    this.newX = x;
+    this.newY = y;
 
     this.emojiStatus = null;
+
+    this.updateProb();
+
+    this.randomStep();
   }
 
   update() {
@@ -61,6 +67,21 @@ export class Pet {
     //
   }
 
+  updateProb() {
+    this.prob = new Array(8).fill(0);
+
+    this.probFromLocality();
+    this.probFromWeather();
+    this.probFromPredators();
+  }
+
+  randomStep() {
+    const r = rndL(this.prob);
+
+    this.newX = this.x + OBL[r].x;
+    this.newY = this.y + OBL[r].y;
+  }
+
   doStep() {
     if (this.pet.stats.hp <= 0 || this.pet.stats.morale <= 0) {
       return;
@@ -87,25 +108,21 @@ export class Pet {
       return;
     }
 
-    this.prob = new Array(8).fill(0);
-
-    this.probFromLocality();
-    this.probFromWeather();
-    this.probFromPredators();
-
     let isValid = false;
-    const r = rndL(this.prob);
-
-    const newX = this.x + OBL[r].x;
-    const newY = this.y + OBL[r].y;
     isValid =
-      newX >= 0 && newX < this.mapWidth && newY >= 0 && newY < this.mapHeight;
+      this.newX >= 0 &&
+      this.newX < this.mapWidth &&
+      this.newY >= 0 &&
+      this.newY < this.mapHeight;
 
     if (isValid) {
-      this.x = newX;
-      this.y = newY;
+      this.x = this.newX;
+      this.y = this.newY;
     }
 
+    this.updateProb();
+
+    this.randomStep();
     //здесь обновить счётчики
   }
 }
