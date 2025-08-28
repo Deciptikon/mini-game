@@ -2,159 +2,171 @@ console.log("start info");
 import { W2, H2, H4, wb, hb, bigText, W, H } from "../constants.js";
 import Button from "../components/Button.js";
 import { createButtonBack } from "../components/functions.js";
-
 export default class InfoScene extends Phaser.Scene {
   constructor() {
     super({ key: "InfoScene" });
   }
 
   create() {
+    // Создаем контейнер для всего контента
+    this.contentContainer = this.add.container(0, 0);
+
+    // Создаем маску для ограничения видимой области
+    this.createMask();
+
     this.showReadme();
 
     // Кнопка возврата в меню
     createButtonBack(this);
   }
 
-  showReadme() {
-    const content = this.cache.text.get("readme");
-    const parsedContent = this.parseMarkdown(content);
+  createMask() {
+    // Создаем графику для маски
+    const maskGraphics = this.make.graphics();
+    maskGraphics.fillRect(W * 0.05, 100, W * 0.9, H * 0.7);
 
-    // Текст
-    this.scrollText = this.add.text(W * 0.05, 100, parsedContent, {
-      fontSize: "25px",
-      color: "#040404ff",
-      wordWrap: { width: W * 0.9 },
-      lineSpacing: 8,
-    });
-
-    // Добавляем скроллинг
-    this.setupScrolling(this.scrollText);
+    // Применяем маску к контейнеру
+    this.contentContainer.mask = new Phaser.Display.Masks.GeometryMask(
+      this,
+      maskGraphics
+    );
   }
 
-  setupScrolling(text) {
-    this.scrollY = 0;
-    this.maxScroll = Math.max(0, text.height - H * 0.7);
-    this.isDragging = false;
-    this.lastY = 0;
-    this.scrollSpeed = 15;
+  showReadme() {
+    const content = this.cache.text.get("readme");
+    this.parseAndDisplayContent(content);
 
-    // Инициализация клавиш
-    this.keys = this.input.keyboard.addKeys("UP,DOWN");
+    // Добавляем скроллинг для контейнера
+    this.setupContainerScrolling();
+  }
 
-    // Скроллинг колесиком мыши
-    this.input.on("wheel", (pointer, gameObjects, deltaX, deltaY) => {
-      this.scrollY = Phaser.Math.Clamp(
-        this.scrollY + deltaY,
-        0,
-        this.maxScroll
-      );
-      text.y = 100 - this.scrollY;
-    });
+  parseAndDisplayContent(text) {
+    const lines = text.split("\n");
+    let currentY = 0;
 
-    // Тачскрин драг
-    text.setInteractive();
-    this.input.setDraggable(text);
+    lines.forEach((line) => {
+      if (line.startsWith("# ")) {
+        // Заголовок 1 уровня
+        const header = this.add
+          .text(W * 0.5, currentY, line.substring(2), {
+            fontSize: "32px",
+            color: "#000000",
+            fontStyle: "bold",
+          })
+          .setOrigin(0.5, 0);
 
-    text.on("pointerdown", (pointer) => {
-      this.isDragging = true;
-      this.lastY = pointer.y;
-    });
+        this.contentContainer.add(header);
+        currentY += header.height + 20;
+      } else if (line.startsWith("## ")) {
+        // Заголовок 2 уровня
+        const subheader = this.add
+          .text(W * 0.5, currentY, line.substring(3), {
+            fontSize: "28px",
+            color: "#000000",
+            fontStyle: "bold",
+          })
+          .setOrigin(0.5, 0);
 
-    text.on("pointerup", () => {
-      this.isDragging = false;
-    });
+        this.contentContainer.add(subheader);
+        currentY += subheader.height + 15;
+      } else if (line.startsWith("### ")) {
+        // Заголовок 3 уровня
+        const subsubheader = this.add
+          .text(W * 0.5, currentY, line.substring(4), {
+            fontSize: "24px",
+            color: "#000000",
+            fontStyle: "bold",
+          })
+          .setOrigin(0.5, 0);
 
-    text.on("pointermove", (pointer) => {
-      if (this.isDragging && pointer.isDown) {
-        const deltaY = pointer.y - this.lastY;
-        this.scrollY = Phaser.Math.Clamp(
-          this.scrollY - deltaY,
-          0,
-          this.maxScroll
-        );
-        text.y = 100 - this.scrollY;
-        this.lastY = pointer.y;
+        this.contentContainer.add(subsubheader);
+        currentY += subsubheader.height + 10;
+      } else if (line.startsWith("![")) {
+        // Картинка
+        const altText = line.match(/!\[(.*?)\]/)?.[1] || "";
+        const image = this.add
+          .image(W * 0.5, currentY, "someImage")
+          .setOrigin(0.5, 0)
+          .setDisplaySize(200, 150);
+
+        this.contentContainer.add(image);
+        currentY += 160;
+      } else if (line.trim() !== "") {
+        // Обычный текст
+        const textLine = this.add.text(W * 0.05, currentY, line, {
+          fontSize: "20px",
+          color: "#000000",
+          wordWrap: { width: W * 0.8 },
+        });
+
+        this.contentContainer.add(textLine);
+        currentY += textLine.height + 10;
+      } else {
+        // Пустая строка
+        currentY += 20;
       }
     });
 
-    // Визуальный индикатор скролла
-    this.addScrollIndicator(text);
-
-    // Запускаем обновление скроллинга
-    this.scrollUpdate();
+    // Сохраняем высоту контента для скроллинга
+    this.contentHeight = currentY;
   }
 
-  scrollUpdate() {
-    // Непрерывный скроллинг при зажатых клавишах
-    this.time.addEvent({
-      delay: 16, // ~60 FPS
-      callback: () => {
-        if (this.keys.UP.isDown) {
-          this.scrollY = Phaser.Math.Clamp(
-            this.scrollY - this.scrollSpeed,
-            0,
-            this.maxScroll
-          );
-          this.scrollText.y = 100 - this.scrollY;
-        }
+  setupContainerScrolling() {
+    this.scrollY = 0;
+    this.maxScroll = Math.max(0, this.contentHeight - H * 0.7);
 
-        if (this.keys.DOWN.isDown) {
-          this.scrollY = Phaser.Math.Clamp(
-            this.scrollY + this.scrollSpeed,
-            0,
-            this.maxScroll
-          );
-          this.scrollText.y = 100 - this.scrollY;
-        }
+    // Скроллинг колесиком
+    this.input.on("wheel", (pointer, gameObjects, deltaX, deltaY) => {
+      this.scrollContainer(deltaY);
+    });
+
+    // Скроллинг стрелками
+    this.keys = this.input.keyboard.addKeys("UP,DOWN");
+    this.scrollEvent = this.time.addEvent({
+      delay: 16,
+      callback: () => {
+        if (this.keys.UP.isDown) this.scrollContainer(-15);
+        if (this.keys.DOWN.isDown) this.scrollContainer(15);
       },
       loop: true,
     });
+
+    // Тачскрин драг
+    this.setupTouchScrolling();
   }
 
-  addScrollIndicator(text) {
-    if (this.maxScroll > 0) {
-      // полоска скрола
-      const sx = W * 0.95;
-      const sy = H * 0.2;
-      const sw = 10;
-      const sh = H * 0.6;
-
-      // ползунок скролбара
-      const bw = 8;
-      const bh = 100;
-
-      // Полоса прокрутки
-      const scrollBar = this.add
-        .rectangle(sx, sy, sw, sh, 0x000000, 0.3)
-        .setOrigin(0.5, 0)
-        .setScrollFactor(0);
-
-      // Бегунок
-      this.scrollThumb = this.add
-        .rectangle(sx, sy, bw, bh, 0x000000, 0.7)
-        .setOrigin(0.5, 0)
-        .setScrollFactor(0);
-
-      // Обновление позиции бегунка
-      this.time.addEvent({
-        delay: 16,
-        callback: () => {
-          const progress =
-            this.maxScroll > 0 ? this.scrollY / this.maxScroll : 0;
-          this.scrollThumb.y = sy + progress * (sh - bh);
-        },
-        loop: true,
-      });
-    }
+  scrollContainer(deltaY) {
+    this.scrollY = Phaser.Math.Clamp(this.scrollY + deltaY, 0, this.maxScroll);
+    this.contentContainer.y = -this.scrollY;
   }
 
-  parseMarkdown(text) {
-    // Простой парсинг для улучшения читаемости
-    return text
-      .replace(/^# (.*$)/gim, "\n=== $1 ===")
-      .replace(/^## (.*$)/gim, "\n== $1 ==")
-      .replace(/^### (.*$)/gim, "\n= $1 =");
-    //.replace(/\*\*(.*?)\*\*/g, "$1")
-    //.replace(/\*(.*?)\*/g, "$1")
+  setupTouchScrolling() {
+    let isDragging = false;
+    let startY = 0;
+    let startScrollY = 0;
+
+    this.input.on("pointerdown", (pointer) => {
+      if (pointer.y > 100 && pointer.y < H * 0.9) {
+        isDragging = true;
+        startY = pointer.y;
+        startScrollY = this.scrollY;
+      }
+    });
+
+    this.input.on("pointerup", () => {
+      isDragging = false;
+    });
+
+    this.input.on("pointermove", (pointer) => {
+      if (isDragging && pointer.isDown) {
+        const deltaY = pointer.y - startY;
+        this.scrollY = Phaser.Math.Clamp(
+          startScrollY - deltaY,
+          0,
+          this.maxScroll
+        );
+        this.contentContainer.y = -this.scrollY;
+      }
+    });
   }
 }
