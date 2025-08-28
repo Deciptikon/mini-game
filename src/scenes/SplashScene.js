@@ -49,6 +49,8 @@ export default class SplashScene extends Phaser.Scene {
     }
 
     this.load.image("tileset", "./src/Map/tileset3_x64.png");
+
+    this.load.text("readme", "./README.md");
   }
 
   loadFromKollection(kollection, list_property, prefix = "") {

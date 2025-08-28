@@ -1,5 +1,5 @@
 console.log("start menu");
-import { W2, H2, H4, wb, hb, isMobile, W } from "../constants.js";
+import { W2, H2, H4, wb, hb, isMobile, W, H, bigText } from "../constants.js";
 import Button from "../components/Button.js";
 
 export default class MenuScene extends Phaser.Scene {
@@ -123,5 +123,14 @@ export default class MenuScene extends Phaser.Scene {
         height: hb,
       }
     );
+
+    // Кнопка показа README
+    const infoBtn = this.add
+      .text(W * 0.8, H * 0.8, "?", bigText)
+      .setInteractive();
+    infoBtn.on("pointerdown", () => {
+      //this.showReadme();
+      this.scene.start("InfoScene");
+    });
   }
 }

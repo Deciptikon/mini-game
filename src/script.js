@@ -15,6 +15,7 @@ import LocationInfoScene from "./scenes/LocationInfoScene.js";
 import LocationScene from "./scenes/LocationScene.js";
 import SettingsScene from "./scenes/SettingsScene.js";
 import InventoryScene from "./scenes/InventoryScene.js";
+import InfoScene from "./scenes/InfoScene.js";
 
 export const gameState = new GameState();
 gameState.load();
@@ -43,6 +44,8 @@ const config = {
     PreSplashScene,
     SplashScene,
     MenuScene,
+    SettingsScene,
+    InfoScene,
     PetsScene,
     PetScene,
     MapScene,
@@ -50,7 +53,6 @@ const config = {
     HouseScene,
     LocationInfoScene,
     LocationScene,
-    SettingsScene,
     InventoryScene,
   ],
   backgroundColor: "#9bd6ff",
