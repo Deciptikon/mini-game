@@ -3,6 +3,7 @@ import { W, H } from "./constants.js";
 
 import GameState from "./GameState.js";
 
+import PreSplashScene from "./scenes/PreSplashScene.js";
 import SplashScene from "./scenes/SplashScene.js";
 import MenuScene from "./scenes/MenuScene.js";
 import PetScene from "./scenes/PetScene.js";
@@ -39,6 +40,7 @@ const config = {
   width: W, // Вертикальный макет для мобилок / альбомный для ПК
   height: H,
   scene: [
+    PreSplashScene,
     SplashScene,
     MenuScene,
     PetsScene,

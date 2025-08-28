@@ -32,7 +32,7 @@ export default class SplashScene extends Phaser.Scene {
       });
     });
 
-    this.load.image("splash", "./assets/splash.png");
+    //this.load.image("splash", "./assets/splash.png");
 
     this.loadFromKollection(ListPets, ["image", "icon"]);
     this.loadFromKollection(ListItems, ["image", "icon"]);
