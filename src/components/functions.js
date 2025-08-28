@@ -108,3 +108,8 @@ export function getLocality(map, x, y) {
   }
   return L;
 }
+
+export function findKeyByValue(collection, value) {
+  const entry = Object.entries(collection).find(([key, val]) => val === value);
+  return entry ? entry[0] : null;
+}

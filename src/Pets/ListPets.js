@@ -21,6 +21,19 @@ export const STATS = {
   morale: { name: "Мораль", icon: "⚖️" },
 };
 
+// разблокировка слотов инвенторя и абилок в зависимости от уровня прокачки
+export const LVL_UNLOCKED = {
+  0: 0,
+  ability1: 3,
+  1: 6,
+  2: 9,
+  ability2: 12,
+  3: 15,
+  4: 18,
+  ability3: 21,
+  5: 24,
+};
+
 export const ListPets = {
   cat: {
     stats: {
@@ -55,6 +68,7 @@ export const ListPets = {
     },
     step: function (pet, current = null) {
       pet.selfCounter++;
+      pet.experience += 0.7;
       if ([TA.SEAS, TA.LAVA].includes(current.tile)) {
         if ([TA.SEAS, TA.LAVA].includes(pet.lastTile)) {
           pet.stats.hp = 0;
@@ -62,6 +76,7 @@ export const ListPets = {
           return;
         }
         pet.stats.hp--;
+        pet.experience += 0.7;
         pet.emojiStatus = "-1❤️";
       }
       pet.lastTile = current.tile;

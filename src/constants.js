@@ -84,3 +84,18 @@ export const smallText = {
   stroke: "#000000",
   strokeThickness: 4,
 };
+
+export const EXP = {
+  name: "Опыт",
+  icon: "🌟",
+};
+
+export const LVL = {
+  name: "Уровень",
+  icon: "🏆",
+};
+
+export const MONEY = {
+  name: "Золото",
+  icon: "🪙",
+};

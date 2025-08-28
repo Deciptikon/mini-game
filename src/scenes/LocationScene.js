@@ -6,6 +6,7 @@ import {
   mapHeightTile,
   mapWidthTile,
   OBL,
+  EXP,
   dK,
   sizeOfInventory,
   H,
@@ -145,10 +146,10 @@ export default class LocationScene extends Phaser.Scene {
       this,
       150,
       40,
-      STATS.hp.icon,
+      EXP.icon,
       (this.pet.pet.level + 1) * 100,
       this.pet.pet.experience,
-      0xaaaa00,
+      0xaa00aa,
       {
         width: W - 200,
         height: 20,
@@ -235,7 +236,9 @@ export default class LocationScene extends Phaser.Scene {
     this.pet.doStep();
 
     this.statusBarExp.updateValue(this.pet.pet.experience);
-    this.statusBarExp.updateLabel(`${this.pet.pet.experience}`);
+    this.statusBarExp.updateLabel(
+      `${Math.ceil(this.pet.pet.experience * 10) / 10}`
+    );
     this.statusBarHP.updateValue(this.pet.pet.stats.hp);
     this.statusBarHP.updateLabel(`${this.pet.pet.stats.hp}`);
     this.statusBarMorale.updateValue(this.pet.pet.stats.morale);
