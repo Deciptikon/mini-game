@@ -11,5 +11,17 @@
       <!-- Canvas создастся автоматически -->
     </div>
     <script type="module" src="./src/script.js"></script>
+
+    <!-- Подключение VK Bridge -->
+    <script>
+      function initBridge() {
+        vkBridge.send("VKWebAppInit");
+        console.log(`vkBridge.send("VKWebAppInit")`);
+      }
+    </script>
+    <script
+      src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"
+      onload="initBridge()"
+    ></script>
   </body>
 </html>
