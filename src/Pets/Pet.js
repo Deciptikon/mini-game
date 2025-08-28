@@ -108,6 +108,8 @@ export class Pet {
       return;
     }
 
+    this.randomStep();
+
     let isValid = false;
     isValid =
       this.newX >= 0 &&
@@ -122,7 +124,6 @@ export class Pet {
 
     this.updateProb();
 
-    this.randomStep();
     //здесь обновить счётчики
   }
 }
