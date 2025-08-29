@@ -124,15 +124,6 @@ export default class MenuScene extends Phaser.Scene {
       }
     );
 
-    /** 
-    const infoBtn = this.add
-      .text(W * 0.8, H * 0.8, "?", bigText)
-      .setInteractive();
-    infoBtn.on("pointerdown", () => {
-      //this.showReadme();
-      this.scene.start("InfoScene");
-    });*/
-
     // Кнопка показа README
     const infoButton = new Button(
       this,
@@ -143,7 +134,7 @@ export default class MenuScene extends Phaser.Scene {
         this.scene.start("InfoScene");
       },
       {
-        color: 0x4caf50,
+        color: 0xea7026,
         width: 50,
         height: 50,
       }
