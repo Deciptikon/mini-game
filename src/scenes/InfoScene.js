@@ -71,7 +71,11 @@ export default class InfoScene extends Phaser.Scene {
         this.addHeader(line.substring(3), currentY, FONT(28 * im), true);
         currentY += 25 * im;
       } else if (line.startsWith("### ")) {
-        this.addHeader(line.substring(4), currentY, FONT(24 * im), true);
+        if (line.startsWith("### Версия")) {
+          this.addVersionHeader(line.substring(4), currentY);
+        } else {
+          this.addHeader(line.substring(4), currentY, FONT(24 * im), true);
+        }
         currentY += 25 * im;
       } else if (line.startsWith("![")) {
         const altText = line.match(/!\[(.*?)\]/)?.[1] || "";
@@ -133,6 +137,16 @@ export default class InfoScene extends Phaser.Scene {
 
     this.contentContainer.add(textObject);
     return y + textObject.height + 0;
+  }
+
+  addVersionHeader(text, y) {
+    const header = this.add.text(CONTENT_MARGIN_X, y, text, {
+      fontSize: FONT(22 * im),
+      color: "#FF6600", // оранжевый для версий
+      wordWrap: { width: CONTENT_WIDTH },
+      fontStyle: "bold",
+    });
+    this.contentContainer.add(header);
   }
 
   setupContainerScrolling() {

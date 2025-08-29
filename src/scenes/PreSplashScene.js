@@ -1,3 +1,5 @@
+import { H, W } from "../constants.js";
+
 console.log("start presplash");
 
 export default class PreSplashScene extends Phaser.Scene {
@@ -19,6 +21,6 @@ export default class PreSplashScene extends Phaser.Scene {
   }
 
   create() {
-    this.splash = this.add.sprite(W2, H2, "splash").setScale(1).setOrigin(0.5);
+    this.splash = this.add.sprite(W, H, "splash").setScale(1).setOrigin(0.5);
   }
 }
