@@ -2,30 +2,48 @@ console.log("start info");
 import { W2, H2, H4, wb, hb, bigText, W, H } from "../constants.js";
 import Button from "../components/Button.js";
 import { createButtonBack } from "../components/functions.js";
+
+// Константы для стилей
+const TEXT_COLOR = "#040404ff";
+const HEADER_COLOR = "#0000ddff";
+const SCROLL_BAR_COLOR = 0x000000;
+const SCROLL_BAR_ALPHA = 0.3;
+const SCROLL_THUMB_COLOR = 0x000000;
+const SCROLL_THUMB_ALPHA = 0.7;
+
+// Константы позиционирования
+const CONTENT_MARGIN_X = W * 0.05;
+const CONTENT_WIDTH = W * 0.85;
+const CONTENT_START_Y = 50;
+const CONTENT_VISIBLE_HEIGHT = H - 100;
+const SCROLL_BAR_X = W * 0.93;
+const SCROLL_BAR_Y = 50;
+const SCROLL_BAR_WIDTH = 10;
+const SCROLL_BAR_HEIGHT = H - 100;
+const SCROLL_THUMB_WIDTH = 8;
+const SCROLL_THUMB_HEIGHT = 100;
+
 export default class InfoScene extends Phaser.Scene {
   constructor() {
     super({ key: "InfoScene" });
   }
 
   create() {
-    // Создаем контейнер для всего контента
     this.contentContainer = this.add.container(0, 0);
-
-    // Создаем маску для ограничения видимой области
     this.createMask();
-
     this.showReadme();
-
-    // Кнопка возврата в меню
     createButtonBack(this);
   }
 
   createMask() {
-    // Создаем графику для маски
     const maskGraphics = this.make.graphics();
-    maskGraphics.fillRect(W * 0.05, 100, W * 0.9, H * 0.7);
+    maskGraphics.fillRect(
+      CONTENT_MARGIN_X,
+      CONTENT_START_Y,
+      W * 0.85,
+      CONTENT_VISIBLE_HEIGHT
+    );
 
-    // Применяем маску к контейнеру
     this.contentContainer.mask = new Phaser.Display.Masks.GeometryMask(
       this,
       maskGraphics
@@ -35,54 +53,25 @@ export default class InfoScene extends Phaser.Scene {
   showReadme() {
     const content = this.cache.text.get("readme");
     this.parseAndDisplayContent(content);
-
-    // Добавляем скроллинг для контейнера
     this.setupContainerScrolling();
+    this.addScrollBar();
   }
 
   parseAndDisplayContent(text) {
     const lines = text.split("\n");
-    let currentY = 0;
+    let currentY = CONTENT_START_Y;
 
     lines.forEach((line) => {
       if (line.startsWith("# ")) {
-        // Заголовок 1 уровня
-        const header = this.add
-          .text(W * 0.5, currentY, line.substring(2), {
-            fontSize: "32px",
-            color: "#000000",
-            fontStyle: "bold",
-          })
-          .setOrigin(0.5, 0);
-
-        this.contentContainer.add(header);
-        currentY += header.height + 20;
+        this.addHeader(line.substring(2), currentY, "32px", true);
+        currentY += 30;
       } else if (line.startsWith("## ")) {
-        // Заголовок 2 уровня
-        const subheader = this.add
-          .text(W * 0.5, currentY, line.substring(3), {
-            fontSize: "28px",
-            color: "#000000",
-            fontStyle: "bold",
-          })
-          .setOrigin(0.5, 0);
-
-        this.contentContainer.add(subheader);
-        currentY += subheader.height + 15;
+        this.addHeader(line.substring(3), currentY, "28px", true);
+        currentY += 25;
       } else if (line.startsWith("### ")) {
-        // Заголовок 3 уровня
-        const subsubheader = this.add
-          .text(W * 0.5, currentY, line.substring(4), {
-            fontSize: "24px",
-            color: "#000000",
-            fontStyle: "bold",
-          })
-          .setOrigin(0.5, 0);
-
-        this.contentContainer.add(subsubheader);
-        currentY += subsubheader.height + 10;
+        this.addHeader(line.substring(4), currentY, "24px", true);
+        currentY += 25;
       } else if (line.startsWith("![")) {
-        // Картинка
         const altText = line.match(/!\[(.*?)\]/)?.[1] || "";
         const image = this.add
           .image(W * 0.5, currentY, "someImage")
@@ -91,81 +80,190 @@ export default class InfoScene extends Phaser.Scene {
 
         this.contentContainer.add(image);
         currentY += 160;
+      } else if (line.includes("**")) {
+        currentY = this.addBoldText(line, currentY);
       } else if (line.trim() !== "") {
-        // Обычный текст
-        const textLine = this.add.text(W * 0.05, currentY, line, {
-          fontSize: "20px",
-          color: "#000000",
-          wordWrap: { width: W * 0.8 },
-        });
-
-        this.contentContainer.add(textLine);
-        currentY += textLine.height + 10;
+        currentY = this.addJustifiedText(line, currentY);
       } else {
-        // Пустая строка
-        currentY += 20;
+        currentY += 10;
       }
     });
 
-    // Сохраняем высоту контента для скроллинга
     this.contentHeight = currentY;
+  }
+
+  addHeader(text, y, fontSize, isCentered = true) {
+    const header = this.add
+      .text(isCentered ? W * 0.5 : CONTENT_MARGIN_X, y, text, {
+        fontSize: fontSize,
+        color: HEADER_COLOR,
+        fontStyle: "bold",
+        align: isCentered ? "center" : "left",
+      })
+      .setOrigin(isCentered ? 0.5 : 0, 0);
+
+    this.contentContainer.add(header);
+    return y + header.height + 10;
+  }
+
+  addBoldText(line, y) {
+    // Просто делаем весь текст жирным, убирая **
+    const cleanText = line.replace(/\*\*/g, "");
+    const text = this.add.text(CONTENT_MARGIN_X, y, cleanText, {
+      fontSize: "20px",
+      color: TEXT_COLOR,
+      //fontStyle: "bold",
+      wordWrap: { width: CONTENT_WIDTH },
+      align: "justify", // Выравнивание по ширине
+    });
+
+    this.contentContainer.add(text);
+    return y + text.height + 10;
+  }
+
+  addJustifiedText(text, y) {
+    const textObject = this.add.text(CONTENT_MARGIN_X, y, text, {
+      fontSize: "20px",
+      color: TEXT_COLOR,
+      wordWrap: { width: CONTENT_WIDTH },
+      align: "justify", // Выравнивание по ширине!
+    });
+
+    this.contentContainer.add(textObject);
+    return y + textObject.height + 0;
   }
 
   setupContainerScrolling() {
     this.scrollY = 0;
-    this.maxScroll = Math.max(0, this.contentHeight - H * 0.7);
+    this.maxScroll = Math.max(0, this.contentHeight - CONTENT_VISIBLE_HEIGHT);
+    this.scrollSpeed = 15;
 
-    // Скроллинг колесиком
     this.input.on("wheel", (pointer, gameObjects, deltaX, deltaY) => {
       this.scrollContainer(deltaY);
     });
 
-    // Скроллинг стрелками
     this.keys = this.input.keyboard.addKeys("UP,DOWN");
     this.scrollEvent = this.time.addEvent({
       delay: 16,
       callback: () => {
-        if (this.keys.UP.isDown) this.scrollContainer(-15);
-        if (this.keys.DOWN.isDown) this.scrollContainer(15);
+        if (this.keys.UP.isDown) this.scrollContainer(-this.scrollSpeed);
+        if (this.keys.DOWN.isDown) this.scrollContainer(this.scrollSpeed);
       },
       loop: true,
     });
 
-    // Тачскрин драг
     this.setupTouchScrolling();
   }
 
   scrollContainer(deltaY) {
     this.scrollY = Phaser.Math.Clamp(this.scrollY + deltaY, 0, this.maxScroll);
     this.contentContainer.y = -this.scrollY;
+    this.updateScrollBar();
   }
 
   setupTouchScrolling() {
-    let isDragging = false;
-    let startY = 0;
-    let startScrollY = 0;
+    this.isDragging = false;
+    this.startY = 0;
+    this.startScrollY = 0;
 
     this.input.on("pointerdown", (pointer) => {
-      if (pointer.y > 100 && pointer.y < H * 0.9) {
-        isDragging = true;
-        startY = pointer.y;
-        startScrollY = this.scrollY;
+      if (
+        pointer.y > CONTENT_START_Y &&
+        pointer.y < CONTENT_START_Y + CONTENT_VISIBLE_HEIGHT
+      ) {
+        this.isDragging = true;
+        this.startY = pointer.y;
+        this.startScrollY = this.scrollY;
       }
     });
 
     this.input.on("pointerup", () => {
-      isDragging = false;
+      this.isDragging = false;
     });
 
     this.input.on("pointermove", (pointer) => {
-      if (isDragging && pointer.isDown) {
-        const deltaY = pointer.y - startY;
+      if (this.isDragging && pointer.isDown) {
+        const deltaY = pointer.y - this.startY;
         this.scrollY = Phaser.Math.Clamp(
-          startScrollY - deltaY,
+          this.startScrollY - deltaY,
           0,
           this.maxScroll
         );
         this.contentContainer.y = -this.scrollY;
+        this.updateScrollBar();
+      }
+    });
+  }
+
+  addScrollBar() {
+    if (this.maxScroll > 0) {
+      this.scrollBar = this.add
+        .rectangle(
+          SCROLL_BAR_X,
+          SCROLL_BAR_Y,
+          SCROLL_BAR_WIDTH,
+          SCROLL_BAR_HEIGHT,
+          SCROLL_BAR_COLOR,
+          SCROLL_BAR_ALPHA
+        )
+        .setOrigin(0.5, 0);
+
+      this.scrollThumb = this.add
+        .rectangle(
+          SCROLL_BAR_X,
+          SCROLL_BAR_Y,
+          SCROLL_THUMB_WIDTH,
+          SCROLL_THUMB_HEIGHT,
+          SCROLL_THUMB_COLOR,
+          SCROLL_THUMB_ALPHA
+        )
+        .setOrigin(0.5, 0);
+
+      this.setupScrollBarInteractivity();
+    }
+  }
+
+  updateScrollBar() {
+    if (this.scrollThumb && this.maxScroll > 0) {
+      const progress = this.scrollY / this.maxScroll;
+      this.scrollThumb.y =
+        SCROLL_BAR_Y + progress * (SCROLL_BAR_HEIGHT - SCROLL_THUMB_HEIGHT);
+    }
+  }
+
+  setupScrollBarInteractivity() {
+    this.scrollBar.setInteractive({ useHandCursor: true });
+    this.scrollThumb.setInteractive({ useHandCursor: true });
+
+    this.scrollBar.on("pointerdown", (pointer) => {
+      const localY = pointer.y - SCROLL_BAR_Y;
+      const progress = Phaser.Math.Clamp(localY / SCROLL_BAR_HEIGHT, 0, 1);
+      this.scrollY = progress * this.maxScroll;
+      this.contentContainer.y = -this.scrollY;
+      this.updateScrollBar();
+    });
+
+    this.scrollThumb.on("pointerdown", (pointer) => {
+      this.isThumbDragging = true;
+      this.thumbStartY = pointer.y;
+      this.thumbStartScrollY = this.scrollY;
+    });
+
+    this.input.on("pointerup", () => {
+      this.isThumbDragging = false;
+    });
+
+    this.input.on("pointermove", (pointer) => {
+      if (this.isThumbDragging && pointer.isDown) {
+        const deltaY = pointer.y - this.thumbStartY;
+        const scrollDelta = (deltaY / SCROLL_BAR_HEIGHT) * this.maxScroll;
+        this.scrollY = Phaser.Math.Clamp(
+          this.thumbStartScrollY + scrollDelta,
+          0,
+          this.maxScroll
+        );
+        this.contentContainer.y = -this.scrollY;
+        this.updateScrollBar();
       }
     });
   }
