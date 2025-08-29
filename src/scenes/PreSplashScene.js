@@ -8,7 +8,10 @@ export default class PreSplashScene extends Phaser.Scene {
   preload() {
     this.load.on("complete", () => {
       console.log(`Loading PreSplash complete`);
-      this.scene.start("SplashScene");
+
+      this.time.delayedCall(500, () => {
+        this.scene.start("SplashScene");
+      });
     });
 
     //загружаем картинку для сплеш-скрина
@@ -16,6 +19,6 @@ export default class PreSplashScene extends Phaser.Scene {
   }
 
   create() {
-    //
+    this.splash = this.add.sprite(W2, H2, "splash").setScale(1).setOrigin(0.5);
   }
 }

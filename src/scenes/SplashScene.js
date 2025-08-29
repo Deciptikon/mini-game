@@ -18,6 +18,7 @@ export default class SplashScene extends Phaser.Scene {
   }
 
   preload() {
+    this.splash = this.add.sprite(W2, H2, "splash").setScale(1).setOrigin(0.5);
     this.createProgressBar();
 
     this.load.on("progress", (value) => {
@@ -67,7 +68,7 @@ export default class SplashScene extends Phaser.Scene {
   }
 
   create() {
-    this.splash = this.add.sprite(W2, H2, "splash").setScale(1).setOrigin(0.5);
+    //this.splash = this.add.sprite(W2, H2, "splash").setScale(1).setOrigin(0.5);
   }
 
   // Создание элементов прогресс-бара
