@@ -14,12 +14,12 @@ const SCROLL_THUMB_ALPHA = 0.7;
 // Константы позиционирования
 const CONTENT_MARGIN_X = W * 0.05;
 const CONTENT_WIDTH = W * 0.85;
-const CONTENT_START_Y = 50;
-const CONTENT_VISIBLE_HEIGHT = H - 100;
+const CONTENT_START_Y = 100;
+const CONTENT_VISIBLE_HEIGHT = H - 150;
 const SCROLL_BAR_X = W * 0.93;
-const SCROLL_BAR_Y = 50;
+const SCROLL_BAR_Y = 100;
 const SCROLL_BAR_WIDTH = 10;
-const SCROLL_BAR_HEIGHT = H - 100;
+const SCROLL_BAR_HEIGHT = H - 150;
 const SCROLL_THUMB_WIDTH = 8;
 const SCROLL_THUMB_HEIGHT = 100;
 
@@ -239,7 +239,11 @@ export default class InfoScene extends Phaser.Scene {
 
     this.scrollBar.on("pointerdown", (pointer) => {
       const localY = pointer.y - SCROLL_BAR_Y;
-      const progress = Phaser.Math.Clamp(localY / SCROLL_BAR_HEIGHT, 0, 1);
+      const progress = Phaser.Math.Clamp(
+        localY / (SCROLL_BAR_HEIGHT - SCROLL_THUMB_HEIGHT),
+        0,
+        1
+      );
       this.scrollY = progress * this.maxScroll;
       this.contentContainer.y = -this.scrollY;
       this.updateScrollBar();
@@ -258,7 +262,8 @@ export default class InfoScene extends Phaser.Scene {
     this.input.on("pointermove", (pointer) => {
       if (this.isThumbDragging && pointer.isDown) {
         const deltaY = pointer.y - this.thumbStartY;
-        const scrollDelta = (deltaY / SCROLL_BAR_HEIGHT) * this.maxScroll;
+        const scrollDelta =
+          (this.maxScroll * deltaY) / (SCROLL_BAR_HEIGHT - SCROLL_THUMB_HEIGHT);
         this.scrollY = Phaser.Math.Clamp(
           this.thumbStartScrollY + scrollDelta,
           0,

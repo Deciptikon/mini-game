@@ -72,7 +72,7 @@ export const ListPets = {
       if ([TA.SEAS, TA.LAVA].includes(current.tile)) {
         if ([TA.SEAS, TA.LAVA].includes(pet.lastTile)) {
           pet.stats.hp = 0;
-          pet.emojiStatus = "-❤️❤️❤️...";
+          pet.emojiStatus = "❤️x0";
           console.log(`hp = ${pet.stats.hp}`);
           return;
         }
