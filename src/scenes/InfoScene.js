@@ -65,18 +65,28 @@ export default class InfoScene extends Phaser.Scene {
 
     lines.forEach((line) => {
       if (line.startsWith("# ")) {
+        currentY += 20 * im;
         this.addHeader(line.substring(2), currentY, FONT(32 * im), true);
-        currentY += 30 * im;
+        currentY += 55 * im;
+      } else if (line.startsWith("@@ ")) {
+        // игнорируем такие строки
+        console.log(line);
+
+        return;
       } else if (line.startsWith("## ")) {
+        currentY += 20 * im;
         this.addHeader(line.substring(3), currentY, FONT(28 * im), true);
-        currentY += 25 * im;
+        currentY += 50 * im;
       } else if (line.startsWith("### ")) {
         if (line.startsWith("### Версия")) {
+          currentY += 40 * im;
           this.addVersionHeader(line.substring(4), currentY);
+          currentY += 30 * im;
         } else {
+          currentY += 20 * im;
           this.addHeader(line.substring(4), currentY, FONT(24 * im), true);
+          currentY += 50 * im;
         }
-        currentY += 25 * im;
       } else if (line.startsWith("![")) {
         const altText = line.match(/!\[(.*?)\]/)?.[1] || "";
         const image = this.add
@@ -86,13 +96,16 @@ export default class InfoScene extends Phaser.Scene {
 
         this.contentContainer.add(image);
         currentY += 160;
-      } else if (line.includes("**")) {
+      } else if (line.startsWith("- ")) {
+        currentY += 20 * im;
         currentY = this.addBoldText(line, currentY);
       } else if (line.trim() !== "") {
         currentY = this.addJustifiedText(line, currentY);
       } else {
-        currentY += 10;
+        //currentY += 10;
       }
+
+      currentY -= 10 * im;
     });
 
     this.contentHeight = currentY;
@@ -109,22 +122,22 @@ export default class InfoScene extends Phaser.Scene {
       .setOrigin(isCentered ? 0.5 : 0, 0);
 
     this.contentContainer.add(header);
-    return y + header.height + 10;
+    return y + header.height + 10 * im;
   }
 
   addBoldText(line, y) {
     // Просто делаем весь текст жирным, убирая **
-    const cleanText = line.replace(/\*\*/g, "");
-    const text = this.add.text(CONTENT_MARGIN_X, y, cleanText, {
+    //const cleanText = line.replace(/\*\*/g, "");
+    const text = this.add.text(CONTENT_MARGIN_X, y, line, {
       fontSize: FONT(20 * im),
       color: TEXT_COLOR,
-      //fontStyle: "bold",
+      fontStyle: "bold",
       wordWrap: { width: CONTENT_WIDTH },
-      align: "justify", // Выравнивание по ширине
+      //align: "justify", // Выравнивание по ширине
     });
 
     this.contentContainer.add(text);
-    return y + text.height + 10;
+    return y + text.height + 0 * im;
   }
 
   addJustifiedText(text, y) {
@@ -136,7 +149,7 @@ export default class InfoScene extends Phaser.Scene {
     });
 
     this.contentContainer.add(textObject);
-    return y + textObject.height + 0;
+    return y + textObject.height + 0 * im;
   }
 
   addVersionHeader(text, y) {

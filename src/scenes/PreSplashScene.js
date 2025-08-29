@@ -21,6 +21,6 @@ export default class PreSplashScene extends Phaser.Scene {
   }
 
   create() {
-    this.splash = this.add.sprite(W, H, "splash").setScale(1).setOrigin(0.5);
+    //this.splash = this.add.sprite(W, H, "splash").setScale(1).setOrigin(0.5);
   }
 }
