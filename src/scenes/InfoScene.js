@@ -1,7 +1,7 @@
 console.log("start info");
-import { W2, H2, H4, wb, hb, bigText, W, H } from "../constants.js";
+import { W2, H2, H4, wb, hb, bigText, W, H, isMobile } from "../constants.js";
 import Button from "../components/Button.js";
-import { createButtonBack } from "../components/functions.js";
+import { createButtonBack, FONT } from "../components/functions.js";
 
 // Константы для стилей
 const TEXT_COLOR = "#040404ff";
@@ -22,6 +22,8 @@ const SCROLL_BAR_WIDTH = 10;
 const SCROLL_BAR_HEIGHT = H - 100;
 const SCROLL_THUMB_WIDTH = 8;
 const SCROLL_THUMB_HEIGHT = 100;
+
+const im = isMobile ? 1 : 2;
 
 export default class InfoScene extends Phaser.Scene {
   constructor() {
@@ -63,14 +65,14 @@ export default class InfoScene extends Phaser.Scene {
 
     lines.forEach((line) => {
       if (line.startsWith("# ")) {
-        this.addHeader(line.substring(2), currentY, "32px", true);
-        currentY += 30;
+        this.addHeader(line.substring(2), currentY, FONT(32 * im), true);
+        currentY += 30 * im;
       } else if (line.startsWith("## ")) {
-        this.addHeader(line.substring(3), currentY, "28px", true);
-        currentY += 25;
+        this.addHeader(line.substring(3), currentY, FONT(28 * im), true);
+        currentY += 25 * im;
       } else if (line.startsWith("### ")) {
-        this.addHeader(line.substring(4), currentY, "24px", true);
-        currentY += 25;
+        this.addHeader(line.substring(4), currentY, FONT(24 * im), true);
+        currentY += 25 * im;
       } else if (line.startsWith("![")) {
         const altText = line.match(/!\[(.*?)\]/)?.[1] || "";
         const image = this.add
@@ -110,7 +112,7 @@ export default class InfoScene extends Phaser.Scene {
     // Просто делаем весь текст жирным, убирая **
     const cleanText = line.replace(/\*\*/g, "");
     const text = this.add.text(CONTENT_MARGIN_X, y, cleanText, {
-      fontSize: "20px",
+      fontSize: FONT(20 * im),
       color: TEXT_COLOR,
       //fontStyle: "bold",
       wordWrap: { width: CONTENT_WIDTH },
@@ -123,7 +125,7 @@ export default class InfoScene extends Phaser.Scene {
 
   addJustifiedText(text, y) {
     const textObject = this.add.text(CONTENT_MARGIN_X, y, text, {
-      fontSize: "20px",
+      fontSize: FONT(20 * im),
       color: TEXT_COLOR,
       wordWrap: { width: CONTENT_WIDTH },
       align: "justify", // Выравнивание по ширине!

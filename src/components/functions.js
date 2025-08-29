@@ -113,3 +113,7 @@ export function findKeyByValue(collection, value) {
   const entry = Object.entries(collection).find(([key, val]) => val === value);
   return entry ? entry[0] : null;
 }
+
+export function FONT(num) {
+  return `${num}px`; // Центрируем в тайле
+}
