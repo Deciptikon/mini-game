@@ -99,6 +99,9 @@ export default class InfoScene extends Phaser.Scene {
       } else if (line.startsWith("- ")) {
         currentY += 20 * im;
         currentY = this.addBoldText(line, currentY);
+      } else if (line.startsWith("---")) {
+        currentY += 40 * im;
+        currentY = this.addHorizontalLine(currentY);
       } else if (line.trim() !== "") {
         currentY = this.addJustifiedText(line, currentY);
       } else {
@@ -150,6 +153,23 @@ export default class InfoScene extends Phaser.Scene {
 
     this.contentContainer.add(textObject);
     return y + textObject.height + 0 * im;
+  }
+
+  addHorizontalLine(
+    y,
+    color = 0x000000,
+    thickness = 2 * im,
+    length = CONTENT_WIDTH
+  ) {
+    const line = this.add.rectangle(
+      CONTENT_MARGIN_X + length / 2,
+      y + thickness / 2,
+      length,
+      thickness,
+      color
+    );
+    this.contentContainer.add(line);
+    return y + thickness + 40 * im;
   }
 
   addVersionHeader(text, y) {
