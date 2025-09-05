@@ -5,9 +5,12 @@ export const STATE_INVENTORY_SLOT = {
 };
 
 export class InventorySlot extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, w, h, img, text, onClick, config = {}) {
+  constructor(scene, x, y, w, h, img, text, onClick, config = {}, id) {
     super(scene, x, y);
     scene.add.existing(this);
+
+    this.itemId = null;
+    this.id = id;
 
     // Параметры по умолчанию
     const {
@@ -55,6 +58,7 @@ export class InventorySlot extends Phaser.GameObjects.Container {
   // Заблокированное состояние
   setLockedState() {
     this.state = STATE_INVENTORY_SLOT.LOCKED;
+    this.itemId = null;
 
     const tint = 0xffffff;
     const hoverTint = 0xcccccc;
@@ -103,6 +107,7 @@ export class InventorySlot extends Phaser.GameObjects.Container {
   // Пустое стояние
   setEmptyState() {
     this.state = STATE_INVENTORY_SLOT.EMPTY;
+    this.itemId = null;
 
     const tint = 0xffffff;
     const hoverTint = 0xcccccc;
@@ -150,8 +155,11 @@ export class InventorySlot extends Phaser.GameObjects.Container {
   }
 
   // Активное состояние
-  setActiveState(img, text = null) {
+  setActiveState(itemId, icon, text = null) {
+    console.log(`setActiveState( itemId=${itemId}, icon=${icon}, text = null)`);
+
     this.state = STATE_INVENTORY_SLOT.ACTIVE;
+    this.itemId = itemId;
 
     const textOffsetX = 0;
     const textOffsetY = 0;
@@ -176,13 +184,23 @@ export class InventorySlot extends Phaser.GameObjects.Container {
       hoverBorderWidth,
     };
 
+    if (this.icon) {
+      this.icon.destroy();
+      this.icon = null;
+    }
+
+    if (this.label) {
+      this.label.destroy();
+      this.label = null;
+    }
+
     // Создаем иконку
     this.icon = null;
-    if (img !== null && img !== "") {
+    if (icon !== null && icon !== "") {
       console.log("Добавляем иконку");
       console.log(`this.buttonConfig.scale = ${this.iconScale}`);
       this.icon = this.scene.add
-        .sprite(0, 0, img)
+        .sprite(0, 0, icon)
         .setScale(this.iconScale)
         .setTint(this.buttonConfig.tint)
         .setOrigin(0.5);

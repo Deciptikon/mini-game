@@ -15,61 +15,37 @@ export class Inventory extends Phaser.GameObjects.Container {
 
     const w = 125;
     const s = 10;
-    if (isMobile) {
-      for (let i = -1; i <= 1; i++) {
-        for (let j = 0; j <= 1; j++) {
-          const n = i + 1 + j * 3;
-          this.slots[n] = new InventorySlot(
-            scene,
-            W / 2 + (W / 4) * i,
-            H * 0.8 + (W / 4) * j,
-            w,
-            w,
-            `icon_${"cat"}`,
-            "",
-            () => {
-              console.log(`Клик по иконке n=${n}`);
-              if (this.slots[n].state === STATE_INVENTORY_SLOT.LOCKED) {
-                this.slots[n].setEmptyState();
-                return;
-              }
-              if (this.slots[n].state === STATE_INVENTORY_SLOT.EMPTY) {
-                this.slots[n].setActiveState(`icon_${"cat"}`); //`icon_${"cat"}`
-                return;
-              }
-              if (this.slots[n].state === STATE_INVENTORY_SLOT.ACTIVE) {
-                this.slots[n].setLockedState();
-                return;
-              }
-            },
-            {}
-          );
-        }
-      }
-    } else {
-      const p = (w + s) * 6 - s;
-      for (let i = 0; i < 6; i++) {
-        new InventorySlot(
+    for (let i = -1; i <= 1; i++) {
+      for (let j = 0; j <= 1; j++) {
+        const n = i + 1 + j * 3;
+        this.slots[n] = new InventorySlot(
           scene,
-          W / 2 - p / 2 + (w + s) * i,
-          H * 0.8,
+          W / 2 + (W / 4) * i,
+          H * 0.8 + (W / 4) * j,
           w,
           w,
           `icon_${"cat"}`,
           "",
           () => {
-            console.log("Клик по иконке!");
+            console.log(`Клик по иконке n=${n}`);
+            if (this.slots[n].state === STATE_INVENTORY_SLOT.LOCKED) {
+              this.slots[n].setEmptyState();
+              return;
+            }
+            if (this.slots[n].state === STATE_INVENTORY_SLOT.EMPTY) {
+              this.slots[n].setActiveState(`icon_${"cat"}`); //`icon_${"cat"}`
+              return;
+            }
+            if (this.slots[n].state === STATE_INVENTORY_SLOT.ACTIVE) {
+              this.slots[n].setLockedState();
+              return;
+            }
           },
-          {
-            scale: 0.25,
-            hoverScale: 0.28,
-          }
+          {},
+          n
         );
       }
     }
-
-    //this.draw();
-
     scene.add.existing(this);
   }
 
@@ -78,6 +54,23 @@ export class Inventory extends Phaser.GameObjects.Container {
   draw() {
     for (const item of this.pet.items) {
       //
+    }
+  }
+
+  applyItem(item, icon, idSlot = null) {
+    if (idSlot !== null) {
+      this.slots[idSlot].setActiveState(icon);
+      item.place = "cat";
+      item.slot = idSlot;
+    } else {
+      for (const slot of this.slots) {
+        if (slot.state === STATE_INVENTORY_SLOT.EMPTY) {
+          slot.setActiveState(icon);
+          item.place = "cat";
+          item.slot = slot.id;
+          break;
+        }
+      }
     }
   }
 }

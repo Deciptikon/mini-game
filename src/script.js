@@ -29,6 +29,12 @@ gameState.data.locations.forest.unlocked = true;
 //gameState.data.items.wingOfFly.unlocked = false;
 //gameState.data.items.wingOfFly.place = "cat";
 //gameState.data.items.wingOfFly.slot = 0;
+/** */
+for (const key in gameState.data.items) {
+  gameState.data.items[key].unlocked = true;
+  gameState.data.items[key].place = null;
+  gameState.data.items[key].slot = null;
+}
 
 gameState.data.items.chamomile.unlocked = true;
 gameState.data.items.chamomile.place = "cat";
