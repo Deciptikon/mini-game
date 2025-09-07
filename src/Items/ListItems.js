@@ -28,6 +28,7 @@ export const ListItems = {
     // эта функция будет вызываться на каждом шаге расчетов.
     updateStats: function (pet, val = null) {},
   },
+
   leadBullet: {
     name: "Свинцовая пуля",
     description: "Эта пуля была незаметна пока её не нашли",
@@ -45,6 +46,7 @@ export const ListItems = {
     // эта функция будет вызываться на каждом шаге расчетов.
     updateStats: function (pet, val = null) {},
   },
+
   wingOfFly: {
     name: "Крыло мухи",
     description:
@@ -63,24 +65,25 @@ export const ListItems = {
     // эта функция будет вызываться на каждом шаге расчетов.
     updateStats: function (pet, val = null) {},
   },
-  eyeOfStorm: {
-    name: "Глаз бури",
-    description: "Маленькая ручная буря, помогающая в трудных ситуациях",
-    descriptionEffect: "Мораль в бурях и метелях не падает ниже 3",
-    image: "./src/Items/img/eyeOfStorm.png",
-    icon: "./src/Items/icon/eyeOfStorm.png",
 
-    // эта функция вызывается тоьлко в конструкторе, один раз
-    modifyStats: function (pet, val = null) {},
+  lastDrop: {
+    name: "Последняя капля",
+    description:
+      "Последняя капля самого первого дождя избегает смешивания с иной водой",
+    descriptionEffect: "Вероятность наступить в воду = 0%",
+    image: "./src/Items/img/lastDrop.png",
+    icon: "./src/Items/icon/lastDrop.png",
+
+    // эта функция вызывается только в конструкторе, один раз
+    modifyStats: function (pet, val = null) {
+      console.log(`modifyStats`);
+      pet.probs[TA.SEAS] = 0;
+    },
 
     // эта функция будет вызываться на каждом шаге расчетов.
-    updateStats: function (pet, val = null) {
-      console.log(`updateStats`);
-      if (pet.stats?.morale < 3) {
-        pet.stats.morale = 3;
-      }
-    },
+    updateStats: function (pet, val = null) {},
   },
+
   chamomile: {
     name: "Ромашка",
     description: "Говорят отвар из ромашки востанавливает силы",
@@ -101,6 +104,25 @@ export const ListItems = {
         pet.stats.hp++;
         pet.emojiStatus = "+1❤️";
         console.log("        +1HP");
+      }
+    },
+  },
+
+  eyeOfStorm: {
+    name: "Глаз бури",
+    description: "Маленькая ручная буря, помогающая в трудных ситуациях",
+    descriptionEffect: "Мораль в бурях и метелях не падает ниже 3",
+    image: "./src/Items/img/eyeOfStorm.png",
+    icon: "./src/Items/icon/eyeOfStorm.png",
+
+    // эта функция вызывается тоьлко в конструкторе, один раз
+    modifyStats: function (pet, val = null) {},
+
+    // эта функция будет вызываться на каждом шаге расчетов.
+    updateStats: function (pet, val = null) {
+      console.log(`updateStats`);
+      if (pet.stats?.morale < 3) {
+        pet.stats.morale = 3;
       }
     },
   },

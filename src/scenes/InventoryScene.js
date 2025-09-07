@@ -27,9 +27,10 @@ export default class InventoryScene extends Phaser.Scene {
     super({ key: "InventoryScene" });
 
     this.slots = new Array(sizeOfInventory).fill(null);
-    this.inventory = {};
-    this;
+    this.inventory = [];
+
     this.currentItem = null;
+    this.currentPage = 0;
   }
 
   create() {
@@ -58,8 +59,8 @@ export default class InventoryScene extends Phaser.Scene {
     const s = 10;
     for (let i = -1; i <= 1; i++) {
       for (let j = 0; j <= 1; j++) {
-        const n = i + 1 + j * 3;
-        this.slots[n] = new InventorySlot(
+        const f = i + 1 + j * 3;
+        this.slots[f] = new InventorySlot(
           this,
           W / 2 + (W / 4) * i,
           H * 0.8 + (W / 4) * j,
@@ -68,17 +69,17 @@ export default class InventoryScene extends Phaser.Scene {
           `icon_${"cat"}`,
           "",
           () => {
-            console.log(`Клик по иконке n=${n}`);
-            if (this.slots[n].state === STATE_INVENTORY_SLOT.LOCKED) {
-              this.slots[n].setEmptyState();
+            console.log(`Клик по иконке f=${f}`);
+            if (this.slots[f].state === STATE_INVENTORY_SLOT.LOCKED) {
+              this.slots[f].setEmptyState();
               return;
             }
-            if (this.slots[n].state === STATE_INVENTORY_SLOT.EMPTY) {
+            if (this.slots[f].state === STATE_INVENTORY_SLOT.EMPTY) {
               //this.slots[n].setActiveState(`chamomile`, `icon_${"chamomile"}`); //`icon_${"cat"}`
               return;
             }
-            if (this.slots[n].state === STATE_INVENTORY_SLOT.ACTIVE) {
-              const id = this.slots[n].itemId;
+            if (this.slots[f].state === STATE_INVENTORY_SLOT.ACTIVE) {
+              const id = this.slots[f].itemId;
               if (id) {
                 console.log(`id = ${id}`);
                 console.log(this.gameState.data.items[id]);
@@ -87,19 +88,26 @@ export default class InventoryScene extends Phaser.Scene {
               }
 
               //this.slots[n].setLockedState();
-              this.slots[n].setEmptyState();
+              this.slots[f].setEmptyState();
               this.updateInventory();
               return;
             }
           },
           {},
-          n
+          f
         );
       }
     }
   }
 
   createInventory() {
+    if (this.inventory.length > 0) {
+      for (const { key, icon } of this.inventory) {
+        icon.destroy();
+      }
+    }
+    this.inventory = [];
+
     for (const key in ListItems) {
       if (ListItems.hasOwnProperty(key)) {
         const item = ListItems[key];
@@ -131,15 +139,18 @@ export default class InventoryScene extends Phaser.Scene {
 
         //icon.key = key;
 
-        this.inventory[key] = icon;
+        this.inventory.push({ key: key, icon: icon });
       }
     }
   }
 
   updateInventory() {
+    console.log("------------------------------------");
+
     // простая сетка
     const w = 110;
     const m = isMobile ? 3 : 6;
+    const n = 6;
     const s = (W - m * w) / (m + 1);
 
     const x0 = w / 2 + s;
@@ -147,36 +158,55 @@ export default class InventoryScene extends Phaser.Scene {
 
     let i = 0;
     let j = 0;
-    for (const key in ListItems) {
-      if (ListItems.hasOwnProperty(key)) {
-        const item = ListItems[key];
-        item.place = this.gameState.data.items[key].place;
-        item.slot = this.gameState.data.items[key].slot;
 
-        console.log(item);
+    let q = 0;
+    let fullGrid = false;
 
-        if (this.gameState.data.items[key].place !== null) {
-          if (
-            this.gameState.data.items[key].place === this.gameState.currentPet
-          ) {
-            const idSlot = this.gameState.data.items[key].slot;
-            if (idSlot || idSlot === 0) {
-              this.slots[idSlot].setActiveState(key, `icon_${key}`);
-            }
-          }
-          this.inventory[key].setPosition(xOut, yOut);
-        } else {
-          const x = x0 + j * (w + s);
-          const y = y0 + i * (w + s);
+    for (let k = 0; k < this.inventory.length; k++) {
+      const { key, icon } = this.inventory[k];
 
-          this.inventory[key].setPosition(x, y);
+      const item = ListItems[key];
+      item.place = this.gameState.data.items[key].place;
+      item.slot = this.gameState.data.items[key].slot;
 
-          j++;
-          if (j >= m) {
-            j = 0;
-            i++;
+      console.log(item);
+
+      if (this.gameState.data.items[key].place !== null) {
+        if (
+          this.gameState.data.items[key].place === this.gameState.currentPet
+        ) {
+          const idSlot = this.gameState.data.items[key].slot;
+          if (idSlot || idSlot === 0) {
+            this.slots[idSlot].setActiveState(key, `icon_${key}`);
           }
         }
+        icon.setPosition(xOut, yOut);
+      } else {
+        if (
+          q >= this.currentPage * m * n &&
+          q < (this.currentPage + 1) * m * n
+        ) {
+          if (!fullGrid) {
+            const x = x0 + j * (w + s);
+            const y = y0 + i * (w + s);
+
+            console.log(`i=${i} | j=${j}`);
+            console.log(`q=${q} | currentPage=${this.currentPage}`);
+            console.log(`this.inventory.length = ${this.inventory.length}`);
+
+            icon.setPosition(x, y);
+
+            j++;
+            if (j >= m) {
+              j = 0;
+              i++;
+            }
+            if (i >= n) {
+              fullGrid = true;
+            }
+          }
+        }
+        q++;
       }
     }
   }
@@ -187,22 +217,11 @@ export default class InventoryScene extends Phaser.Scene {
     }
   }
 
-  insertItem(itemId, item, icon, idSlot) {
-    console.log(`idSlot = ${idSlot}`);
-
-    if (idSlot) {
-      console.log(this.slots[idSlot]);
-      this.slots[idSlot].setActiveState(itemId, icon);
-      //item.place = "cat";
-      //item.slot = idSlot;
-    }
-  }
-
   applyItem(itemId, item, icon) {
     for (const slot of this.slots) {
       if (slot.state === STATE_INVENTORY_SLOT.EMPTY) {
         slot.setActiveState(itemId, icon);
-        item.place = "cat";
+        item.place = this.gameState.currentPet;
         item.slot = slot.id;
         break;
       }
