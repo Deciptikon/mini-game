@@ -126,4 +126,30 @@ export const ListItems = {
       }
     },
   },
+
+  stoneOfPseudoreverse: {
+    name: "Камень псевдообращения",
+    description: "Увесистый камешек меняющий всё...",
+    descriptionEffect: "Обращает все вероятности по типам местности.",
+    image: "./src/Items/img/stoneOfPseudoreverse.png",
+    icon: "./src/Items/icon/stoneOfPseudoreverse.png",
+
+    // эта функция вызывается только в конструкторе, один раз
+    modifyStats: function (pet, val = null) {
+      console.log(`modifyStats`);
+
+      let maxP = 0;
+      for (const type in TA) {
+        if (pet.probs[type] > maxP) maxP = pet.probs[type];
+      }
+      for (const type in TA) {
+        pet.probs[type] = maxP - pet.probs[type] + 1;
+      }
+      //pet.probs[TA.SEAS] = 0;
+      console.log(pet.probs);
+    },
+
+    // эта функция будет вызываться на каждом шаге расчетов.
+    updateStats: function (pet, val = null) {},
+  },
 };
